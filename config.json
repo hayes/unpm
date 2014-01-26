@@ -1,0 +1,7 @@
+{
+  "hostname": "localhost",
+  "protocol": "http",
+  "port": 8123,
+  "data_path": "./data",
+  "public_registry": "http://registry.npmjs.org"
+}

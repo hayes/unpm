@@ -1,13 +1,12 @@
 {
-  "name": "pnpm",
+  "name": "fnpm",
   "version": "0.0.0",
   "description": "private npm registry in node",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "Michael Hayes",
   "dependencies": {
     "semver": "~2.2.1",
     "leveldown": "~0.10.2",
