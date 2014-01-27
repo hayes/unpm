@@ -13,4 +13,6 @@ publish: `npm publish --registry http://localhost:8123/registry`
 
 install deps: `npm install --registry http://localhost:8123/registry`
 
+auth: basics are working, you can create users, update users, and create sessions, nothing checks for the sessions yet, that will be easy to add.
+
 still lots of things to add/fix/cleanup/figure out
