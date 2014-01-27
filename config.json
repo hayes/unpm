@@ -3,5 +3,10 @@
   "protocol": "http",
   "port": 8123,
   "data_path": "./data",
-  "public_registry": "http://registry.npmjs.org"
+  "public_registry": "http://registry.npmjs.org",
+  "crypto": {
+    "algorithm": "sha512",
+    "saltLength": 30,
+    "iterations": 10
+  }
 }
