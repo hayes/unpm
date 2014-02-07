@@ -2,6 +2,7 @@
   "hostname": "localhost",
   "protocol": "http",
   "port": 8123,
+  "pathname": "",
   "data_path": "./data",
   "public_registry": "http://registry.npmjs.org",
   "crypto": {
