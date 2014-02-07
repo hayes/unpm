@@ -1,11 +1,12 @@
 {
   "name": "fnpm",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin" : { "fnpm" : "./bin/server.js" },
   "author": "Michael Hayes",
   "dependencies": {
     "semver": "~2.2.1",
