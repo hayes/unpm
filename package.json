@@ -11,15 +11,15 @@
   },
   "author": "Michael Hayes",
   "dependencies": {
-    "semver": "~2.2.1",
-    "request": "~2.33.0",
-    "mkdirp": "~0.3.5",
     "concat-stream": "~1.4.1",
-    "password-hash": "~1.2.1",
-    "npmlog": "0.0.6",
     "fnpm-leveldb": "0.0.5",
-    "levelup": "~0.18.2",
+    "fnpm-fs-tarballs": "0.0.0",
     "leveldown": "~0.10.2",
-    "fnpm-fs-tarballs": "0.0.0"
+    "levelup": "~0.18.2",
+    "mkdirp": "~0.3.5",
+    "npmlog": "0.0.6",
+    "password-hash": "~1.2.1",
+    "request": "~2.33.0",
+    "semver": "~2.2.1"
   }
 }
