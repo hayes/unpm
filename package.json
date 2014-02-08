@@ -1,12 +1,14 @@
 {
   "name": "fnpm",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bin" : { "fnpm" : "./bin/server.js" },
+  "bin": {
+    "fnpm": "./bin/server.js"
+  },
   "author": "Michael Hayes",
   "dependencies": {
     "semver": "~2.2.1",
@@ -15,6 +17,9 @@
     "concat-stream": "~1.4.1",
     "password-hash": "~1.2.1",
     "npmlog": "0.0.6",
-    "fnpm-leveldb": "0.0.0"
+    "fnpm-leveldb": "0.0.5",
+    "levelup": "~0.18.2",
+    "leveldown": "~0.10.2",
+    "fnpm-fs-tarballs": "0.0.0"
   }
 }
