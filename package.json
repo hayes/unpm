@@ -12,7 +12,7 @@
   "author": "Michael Hayes",
   "dependencies": {
     "concat-stream": "~1.4.1",
-    "fnpm-leveldb": "0.0.5",
+    "fnpm-leveldb": "0.0.6",
     "fnpm-fs-tarballs": "0.0.0",
     "leveldown": "~0.10.2",
     "levelup": "~0.18.2",
