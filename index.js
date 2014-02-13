@@ -13,4 +13,4 @@ mkdirp.sync(data_dir + '/tarballs')
 db = levelup(data_dir + '/db')
 config.backend = fs_tarballs(backend(db), './data/tarballs')
 
-http.createServer(fnpm(config).handler).listen(8123)
+http.createServer(fnpm(config).router.handler).listen(8123)
