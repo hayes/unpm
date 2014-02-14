@@ -28,3 +28,6 @@ your fnpm server with a `--registry` flag (or via your `.npmrc` with a
 Basics of authentication are working. You can create users, update users, and
 create sessions, but nothing checks for the sessions yet.
 
+## License
+
+MIT
