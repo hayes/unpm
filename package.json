@@ -21,5 +21,6 @@
     "password-hash": "~1.2.1",
     "request": "~2.33.0",
     "semver": "~2.2.1"
-  }
+  },
+  "license": "MIT"
 }
