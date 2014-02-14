@@ -1,18 +1,30 @@
 fnpm
 ====
 
-##Working
+Your own private npm
 
-copy module from public npm: `curl localhost:8123/clone/module_name/1.1.1?recursive=true -X POST`
+## Usage
 
-install from private npm: `npm install --registry http://localhost:8123 module_name@1.1.1`
+To copy a module from the public npm:
 
-add a user: `npm adduser --registry http://localhost:8123`
+`curl http://localhost:8123/clone/module-name/1.1.1?recursive=true -X POST`
 
-publish: `npm publish --registry http://localhost:8123`
+---
 
-install deps: `npm install --registry http://localhost:8123`
+Most normal npm commands work, you will just need to specify the location to
+your fnpm server with a `--registry` flag (or via your `.npmrc` with a
+`registry =` entry).
 
-auth: basics are working, you can create users, update users, and create sessions, nothing checks for the sessions yet, that will be easy to add.
+### Examples
 
-still lots of things to add/fix/cleanup/figure out
+* Install module: 
+`npm install module-name@1.1.1 --registry http://localhost:8123`
+* Publish module: `npm publish --registry http://localhost:8123`
+* Install dependencies: `npm install --registry http://localhost:8123`
+* Add a user: `npm adduser --registry http://localhost:8123`
+
+## TODO
+
+Basics of authentication are working. You can create users, update users, and
+create sessions, but nothing checks for the sessions yet.
+
