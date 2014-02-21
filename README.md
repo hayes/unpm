@@ -1,4 +1,4 @@
-fnpm
+unpm
 ====
 
 Your own private npm
