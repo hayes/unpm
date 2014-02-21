@@ -11,9 +11,9 @@ To copy a module from the public npm:
 
 ---
 
-Most normal npm commands work, you will just need to specify the location to
-your fnpm server with a `--registry` flag (or via your `.npmrc` with a
-`registry =` entry).
+Most normal npm commands work, you will just need to specify the location of
+your μnpm server with a `--registry` flag (or via your `.npmrc` with a
+`registry` entry).
 
 ### Examples
 
