@@ -1,16 +1,24 @@
 var fs_tarballs = require('fnpm-fs-tarballs')
   , backend = require('fnpm-leveldb')
-  , fnpm = require('./lib/index')
+  , unpm = require('./lib/index')
   , levelup = require('levelup')
   , mkdirp = require('mkdirp')
   , http = require('http')
-  , data_dir = './data'
-  , config = {}
-  , handler
-  , db
+  , path = require('path')
 
-mkdirp.sync(data_dir + '/tarballs')
-db = levelup(data_dir + '/db')
-config.backend = fs_tarballs(backend(db), './data/tarballs')
+module.exports = function(port) {
+  var data_dir = path.join(process.cwd(), 'data')
+    , config = {}
+    , handler
+    , db
 
-http.createServer(fnpm(config).router.handler).listen(8123)
+  var tarballs_dir = path.join(data_dir, 'tarballs')
+
+  mkdirp.sync(tarballs_dir)
+  db = levelup(path.join(data_dir, 'db'))
+  config.backend = fs_tarballs(backend(db), tarballs_dir)
+
+  var handler = unpm(config).router.handler
+
+  return http.createServer(handler).listen(port || 8123)
+}

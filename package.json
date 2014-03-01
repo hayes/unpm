@@ -4,10 +4,11 @@
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/server.js"
   },
   "bin": {
-    "fnpm": "./bin/server.js"
+    "unpm": "./bin/server.js"
   },
   "author": "Michael Hayes",
   "dependencies": {
@@ -20,7 +21,8 @@
     "npmlog": "0.0.6",
     "password-hash": "~1.2.1",
     "request": "~2.33.0",
-    "semver": "~2.2.1"
+    "semver": "~2.2.1",
+    "nopt": "2.2.0"
   },
   "license": "MIT",
   "devDependencies": {},
