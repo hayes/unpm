@@ -4,7 +4,7 @@
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node test/index.js",
+    "test": "node test/run.js",
     "start": "node bin/server.js",
     "coverage": "node test/coverage.js"
   },
