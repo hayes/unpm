@@ -7,7 +7,7 @@
     "test": "node test/run.js",
     "start": "node bin/server.js",
     "coverage": "node test/coverage.js",
-    "converalls": "node test/coverage.js | ./node_modules/coveralls/bin/coveralls.js"
+    "coveralls": "node test/coverage.js | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
     "unpm": "./bin/server.js"
