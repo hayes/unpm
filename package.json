@@ -4,7 +4,7 @@
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tape test/*/*.test.js",
     "start": "node bin/server.js"
   },
   "bin": {
@@ -25,7 +25,10 @@
     "nopt": "2.2.0"
   },
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "tape": "2.5.0",
+    "memdown": "0.7.0"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/mghayes/unpm.git"
