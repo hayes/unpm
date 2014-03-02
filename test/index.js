@@ -17,7 +17,7 @@ test('load tests', function(t) {
       require(files[i])
     }
 
-    t.ok(true)
+    t.ok(true, 'loaded tests')
     t.end()
   })
 })
