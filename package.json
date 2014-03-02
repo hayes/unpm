@@ -4,8 +4,9 @@
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
-    "test": "tape test/*/*.test.js",
-    "start": "node bin/server.js"
+    "test": "node test/index.js",
+    "start": "node bin/server.js",
+    "coverage": "node test/coverage.js"
   },
   "bin": {
     "unpm": "./bin/server.js"
@@ -22,12 +23,15 @@
     "password-hash": "~1.2.1",
     "request": "~2.33.0",
     "semver": "~2.2.1",
-    "nopt": "2.2.0"
+    "nopt": "2.2.0",
+    "glob": "^3.2.9",
+    "through": "^2.3.4"
   },
   "license": "MIT",
   "devDependencies": {
     "tape": "2.5.0",
-    "memdown": "0.7.0"
+    "memdown": "0.7.0",
+    "blanket": "^1.1.6"
   },
   "repository": {
     "type": "git",
