@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node test/run.js",
     "start": "node bin/server.js",
-    "coverage": "node test/coverage.js"
+    "coverage": "node test/coverage.js",
+    "converalls": "node test/coverage.js | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
     "unpm": "./bin/server.js"
@@ -23,15 +24,16 @@
     "password-hash": "~1.2.1",
     "request": "~2.33.0",
     "semver": "~2.2.1",
-    "nopt": "2.2.0",
-    "glob": "^3.2.9",
-    "through": "^2.3.4"
+    "nopt": "2.2.0"
   },
   "license": "MIT",
   "devDependencies": {
     "tape": "2.5.0",
     "memdown": "0.7.0",
-    "blanket": "^1.1.6"
+    "blanket": "^1.1.6",
+    "coveralls": "2.8.0",
+    "glob": "3.2.9",
+    "mocha-lcov-reporter": "0.0.1"
   },
   "repository": {
     "type": "git",
