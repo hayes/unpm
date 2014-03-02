@@ -9,6 +9,10 @@ To copy a module from the public npm:
 
 `curl http://localhost:8123/clone/module-name/1.1.1?recursive=true -X POST`
 
+To clone deps for a module already in μnpm:
+
+`curl http://localhost:8123/get_deps/module-name/1.1.1?recursive=true -X POST`
+
 ---
 
 Most normal npm commands work, you will just need to specify the location of
@@ -17,7 +21,7 @@ your μnpm server with a `--registry` flag (or via your `.npmrc` with a
 
 ### Examples
 
-* Install module: 
+* Install module:
 `npm install module-name@1.1.1 --registry http://localhost:8123`
 * Publish module: `npm publish --registry http://localhost:8123`
 * Install dependencies: `npm install --registry http://localhost:8123`
