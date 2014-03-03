@@ -16,20 +16,24 @@ var cache = require.cache[
 
 cache.exports = test
 
-test('load tests', function(t) {
-  t.plan(1)
+test('load fil', function(t) {
+  t.plan(3)
 
   // require all files in lib so that untested files are reflected in coverage
   glob(path.resolve(__dirname, '../lib/*.js'), function(err, files) {
     for(var i = 0, len = files.length; i < len; ++i) {
       require(files[i])
     }
+
+    t.ok(true, 'loaded root files')
   })
 
   glob(path.resolve(__dirname, '../lib/**/*.js'), function(err, files) {
     for(var i = 0, len = files.length; i < len; ++i) {
       require(files[i])
     }
+
+    t.ok(true, 'loaded nested files')
   })
 
   glob(path.resolve(__dirname, '../test/**/*.test.js'), function(err, files) {
@@ -38,6 +42,5 @@ test('load tests', function(t) {
     }
 
     t.ok(true, 'loaded tests')
-    t.end()
   })
 })
