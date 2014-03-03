@@ -16,7 +16,7 @@ var cache = require.cache[
 
 cache.exports = test
 
-test('load fil', function(t) {
+test('load files', function(t) {
   t.plan(3)
 
   // require all files in lib so that untested files are reflected in coverage

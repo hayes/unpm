@@ -46,7 +46,7 @@ test('create user', function(t) {
   })
 })
 
-test('find_user', function(t) {
+test('find user', function(t) {
   var User = init_user(config)
 
   var data = {
@@ -56,8 +56,6 @@ test('find_user', function(t) {
     , date: '2014-01-01'
     , password_sha: sha('hunter2saltine')
   }
-
-  var USER
 
   t.plan(9)
 
@@ -78,6 +76,54 @@ test('find_user', function(t) {
       t.ok(!user, 'no user for other guy')
     })
   })
+})
+
+test('update user', function(t) {
+  var User = init_user(config)
+
+  var data = {
+      name: 'ZeroCool'
+    , email: 'me@example.com'
+    , salt: 'saltine'
+    , date: '2014-01-01'
+    , password_sha: sha('hunter2saltine')
+  }
+
+  t.plan(12)
+
+  User.create(data.name, data, created)
+
+  function created(err) {
+    t.ok(!err, 'create user to find')
+
+    data.email = 'me2@example.com'
+    data.salt = 'saltine2'
+    data.date = '2015-01-01'
+    data.password_sha = sha('hunter2saltine2')
+
+    User.find(data.name, function(err, user) {
+      t.ok(!err, 'no err')
+      User.update(user, data, updated)
+    })
+  }
+
+  function updated(err, user) {
+    t.ok(!err, 'no error')
+    t.equal(user.email, data.email, 'gets email')
+    t.equal(user.date, data.date, 'gets date')
+    t.ok('_rev', 'gets _rev')
+    t.equal(Object.keys(user).length, 4, 'nothing else')
+
+    User.find(data.name, found)
+  }
+
+  function found(err, user) {
+    t.ok(!err, 'no error')
+    t.equal(user.email, data.email, 'gets email')
+    t.equal(user.date, data.date, 'gets date')
+    t.ok('_rev', 'gets _rev')
+    t.equal(Object.keys(user).length, 4, 'nothing else')
+  }
 })
 
 function sha(s) {
