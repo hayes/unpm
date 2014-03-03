@@ -18,8 +18,17 @@ module.exports = function(port) {
   db = levelup(path.join(data_dir, 'db'))
   config.backend = fs_tarballs(backend(db), tarballs_dir)
 
-  var handler = unpm(config).router.handler
+  handler = unpm(config)
 
-  http.createServer(handler).listen(port || 8123)
+  http.createServer(function(req, res) {
+    var self = this
+
+    handler.router.route(req, res)
+
+    res.on('finish', function() {
+      handler.log.http(res.statusCode, req.url)
+    })
+  }).listen(port || 8123)
+
   console.log('Started unpm on port %s', port || 8123)
 }
