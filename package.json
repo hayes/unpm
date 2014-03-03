@@ -4,10 +4,10 @@
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node test/run.js",
+    "test": "tape test/**/*.test.js",
     "start": "node bin/server.js",
-    "coverage": "node test/coverage.js",
-    "coveralls": "node test/coverage.js | ./node_modules/coveralls/bin/coveralls.js"
+    "coverage": "node scripts/coverage.js",
+    "coveralls": "npm run coverage | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
     "unpm": "./bin/server.js"

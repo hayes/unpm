@@ -3,7 +3,7 @@ var init_user = require('../../lib/models/User')
   , hash = require('password-hash')
   , backend = require('../backend')
   , crypto = require('crypto')
-  , test = require('../index')
+  , test = require('tape')
 
 test('can init User', function(t) {
   config.backend = backend()
