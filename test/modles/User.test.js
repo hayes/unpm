@@ -1,7 +1,7 @@
 var init_user = require('../../lib/models/User')
   , config = require('../../lib/config.json')
-  , hash = require('password-hash')
   , backend = require('../backend')
+  , hash = require('password-hash')
   , crypto = require('crypto')
   , test = require('tape')
 
@@ -47,6 +47,8 @@ test('create user', function(t) {
 })
 
 test('find user', function(t) {
+  config.backend = backend()
+
   var User = init_user(config)
 
   var data = {
@@ -79,6 +81,8 @@ test('find user', function(t) {
 })
 
 test('update user', function(t) {
+  config.backend = backend()
+
   var User = init_user(config)
 
   var data = {
@@ -123,6 +127,47 @@ test('update user', function(t) {
     t.equal(user.date, data.date, 'gets date')
     t.ok('_rev', 'gets _rev')
     t.equal(Object.keys(user).length, 4, 'nothing else')
+  }
+})
+
+test('auth user', function(t) {
+  config.backend = backend()
+
+  var User = init_user(config)
+
+  var data = {
+      email: 'me@example.com'
+    , salt: 'saltine'
+    , date: '2014-01-01'
+  }
+
+  data.password_sha = sha('hunter2saltine')
+
+  t.plan(12)
+
+  User.create('ZeroCool', data, created)
+
+  function created(err, user) {
+    t.ok(!err, 'no err')
+    User.auth('ZeroCool', 'hunter2', authed)
+  }
+
+  function authed(err, user) {
+    t.ok(!err, 'no error')
+    t.ok(user, 'returns user')
+    t.equal(user.name, 'ZeroCool', 'gets name')
+    t.equal(user.email, data.email, 'gets email')
+    t.equal(user.date, data.date, 'gets date')
+    t.ok('_rev', 'gets _rev')
+    t.equal(Object.keys(user).length, 4, 'nothing else')
+
+    User.auth('ZeroCool', 'hunter3', not_found)
+    User.auth('ZeroCoo1', 'hunter2', not_found)
+  }
+
+  function not_found(err, user) {
+    t.ok(!user, 'no user')
+    t.ok(err, 'returns error')
   }
 })
 
