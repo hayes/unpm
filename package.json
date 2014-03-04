@@ -25,7 +25,7 @@
     "request": "~2.33.0",
     "semver": "~2.2.1",
     "nopt": "2.2.0",
-    "unpm-router": "0.0.0"
+    "unpm-router": "0.0.1"
   },
   "license": "MIT",
   "devDependencies": {
