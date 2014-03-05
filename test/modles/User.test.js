@@ -1,28 +1,25 @@
-var init_user = require('../../lib/models/User')
-  , config = require('../../lib/config.json')
+var CLS = require('continuation-local-storage')
+  , unpm = CLS.createNamespace('unpm')
+
+var config = require('../../lib/config.json')
+  , User = require('../../lib/models/User')
   , backend = require('../backend')
-  , hash = require('password-hash')
   , crypto = require('crypto')
   , test = require('tape')
 
-test('can init User', function(t) {
-  config.backend = backend()
+function setup(test) {
+  return function(t) {
+    unpm.run(function() {
+      unpm.set('config', config)
+      unpm.set('backend', backend())
+      test(t)
+    })
+  }
+}
 
-  var User = init_user(config)
 
-  t.ok(User, 'returns an object')
-  t.equal(typeof User.find, 'function', 'User has a find method')
-  t.equal(typeof User.create, 'function', 'User has a create method')
-  t.equal(typeof User.update, 'function', 'User has an update method')
-  t.equal(typeof User.auth, 'function', 'User has an auth method')
-  t.end()
-})
-
-test('create user', function(t) {
-  config.backend = backend()
-
-  var User = init_user(config)
-    , user_data = {}
+test('create user', setup(function(t) {
+  var user_data = {}
 
   user_data.password_sha = 'hunter2'
   user_data.date = '2014-01-01'
@@ -44,13 +41,9 @@ test('create user', function(t) {
   User.create('ZeroCool', {password_sha: 'foo'}, function(err) {
     t.ok(err, 'requires date')
   })
-})
+}))
 
-test('find user', function(t) {
-  config.backend = backend()
-
-  var User = init_user(config)
-
+test('find user', setup(function(t) {
   var data = {
       name: 'ZeroCool'
     , email: 'me@example.com'
@@ -78,13 +71,9 @@ test('find user', function(t) {
       t.ok(!user, 'no user for other guy')
     })
   })
-})
+}))
 
-test('update user', function(t) {
-  config.backend = backend()
-
-  var User = init_user(config)
-
+test('update user', setup(function(t) {
   var data = {
       name: 'ZeroCool'
     , email: 'me@example.com'
@@ -128,13 +117,9 @@ test('update user', function(t) {
     t.ok('_rev', 'gets _rev')
     t.equal(Object.keys(user).length, 4, 'nothing else')
   }
-})
+}))
 
-test('auth user', function(t) {
-  config.backend = backend()
-
-  var User = init_user(config)
-
+test('auth user', setup(function(t) {
   var data = {
       email: 'me@example.com'
     , salt: 'saltine'
@@ -169,7 +154,7 @@ test('auth user', function(t) {
     t.ok(!user, 'no user')
     t.ok(err, 'returns error')
   }
-})
+}))
 
 function sha(s) {
   return crypto.createHash('sha1').update(s).digest('hex')
