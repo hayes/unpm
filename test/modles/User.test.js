@@ -17,7 +17,6 @@ function setup(test) {
   }
 }
 
-
 test('create user', setup(function(t) {
   var user_data = {}
 
