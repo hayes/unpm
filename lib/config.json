@@ -1,8 +1,10 @@
 {
-  "hostname": "localhost",
-  "protocol": "http",
-  "port": 8123,
-  "pathname": "",
+  "host": {
+    "hostname": "localhost",
+    "protocol": "http",
+    "port": 8123,
+    "pathname": ""
+  },
   "data_path": "./data",
   "auto_clone_deps": true,
   "public_registry": "http://registry.npmjs.org",

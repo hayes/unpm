@@ -3,7 +3,6 @@ var fs_tarballs = require('fnpm-fs-tarballs')
   , unpm = require('./lib/index')
   , levelup = require('levelup')
   , mkdirp = require('mkdirp')
-  , http = require('http')
   , path = require('path')
 
 module.exports = function(port) {
@@ -18,8 +17,6 @@ module.exports = function(port) {
   db = levelup(path.join(data_dir, 'db'))
   config.backend = fs_tarballs(backend(db), tarballs_dir)
 
-  var handler = unpm(config).router.handler
-
-  http.createServer(handler).listen(port || 8123)
+  unpm(config).server.listen(port || 8123)
   console.log('Started unpm on port %s', port || 8123)
 }
