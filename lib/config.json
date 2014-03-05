@@ -3,7 +3,7 @@
     "hostname": "localhost",
     "protocol": "http",
     "port": 8123,
-    "pathname": "",
+    "pathname": ""
   },
   "data_path": "./data",
   "auto_clone_deps": true,
