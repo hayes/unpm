@@ -4,6 +4,7 @@ var CLS = require('continuation-local-storage')
 var Package = require('../../../lib/models/Package')
   , config = require('../../../lib/config.json')
   , backend = require('../../backend')
+  , concat = require('concat-stream')
   , test = require('tape')
 
 function setup(test) {
@@ -16,19 +17,7 @@ function setup(test) {
   }
 }
 
-test('Package.set_meta', setup(function(t) {
-  var data = {
-    foo: 'bar'
-  }
-
-  t.plan(1)
-
-  Package.set_meta('unpm', data, function(err) {
-    t.ok(!err, 'no error when setting meta')
-  })
-}))
-
-test('Package.get_meta', setup(function(t) {
+test('get and set meta', setup(function(t) {
   var data = {
     foo: 'bar'
   }
@@ -43,5 +32,34 @@ test('Package.get_meta', setup(function(t) {
   function got_meta(err, result) {
     t.ok(!err, 'no error when getting meta')
     t.deepEqual(result, data, 'returned data matches set data')
+  }
+}))
+
+test('get and set tarball', setup(function(t) {
+  var stream = Package.set_tarball('unpm', '1.2.3')
+    , val = 'abc'
+
+  stream.on('end', function() {
+    t.ok(true, 'no error when setting tarball')
+    get_tarball()
+  })
+  stream.on('error', function(err) {
+    t.ok(false, 'no error when setting tarball')
+  })
+
+  t.plan(2)
+  stream.write(val)
+  stream.end()
+
+  function get_tarball() {
+    var result = Package.get_tarball('unpm', '1.2.3').pipe(concat(done))
+
+    result.on('error', function() {
+      t.ok(false, 'no error when getting tarball')
+    })
+
+    function done(data) {
+      t.equal(data, val, 'tarball should equal set value')
+    }
   }
 }))
