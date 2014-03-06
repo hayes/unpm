@@ -27,3 +27,21 @@ test('Package.set_meta', setup(function(t) {
     t.ok(!err, 'no error when setting meta')
   })
 }))
+
+test('Package.get_meta', setup(function(t) {
+  var data = {
+    foo: 'bar'
+  }
+
+  t.plan(3)
+
+  Package.set_meta('unpm', data, function(err) {
+    t.ok(!err, 'no error when setting meta')
+    Package.get_meta('unpm', got_meta)
+  })
+
+  function got_meta(err, result) {
+    t.ok(!err, 'no error when getting meta')
+    t.deepEqual(result, data, 'returned data matches set data')
+  }
+}))
