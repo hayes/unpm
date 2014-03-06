@@ -1,9 +1,9 @@
 var CLS = require('continuation-local-storage')
   , unpm = CLS.createNamespace('unpm')
 
-var Package = require('../../lib/models/Package')
-  , config = require('../../lib/config.json')
-  , backend = require('../backend')
+var Package = require('../../../lib/models/Package')
+  , config = require('../../../lib/config.json')
+  , backend = require('../../backend')
   , test = require('tape')
 
 function setup(test) {
