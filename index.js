@@ -8,7 +8,6 @@ var fs_tarballs = require('fnpm-fs-tarballs')
 module.exports = function(port) {
   var data_dir = path.join(process.cwd(), 'data')
     , config = {}
-    , handler
     , db
 
   var tarballs_dir = path.join(data_dir, 'tarballs')
