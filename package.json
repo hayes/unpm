@@ -14,16 +14,16 @@
   },
   "author": "Michael Hayes",
   "dependencies": {
-    "concat-stream": "~1.4.1",
+    "concat-stream": "1.4.1",
     "unpm-leveldb": "0.1.0",
     "fnpm-fs-tarballs": "0.0.0",
-    "leveldown": "~0.10.2",
-    "levelup": "~0.18.2",
+    "leveldown": "0.10.2",
+    "levelup": "0.18.2",
     "mkdirp": "0.3.5",
     "npmlog": "0.0.6",
-    "password-hash": "~1.2.1",
-    "request": "~2.33.0",
-    "semver": "~2.2.1",
+    "password-hash": "1.2.1",
+    "request": "2.33.0",
+    "semver": "2.2.1",
     "nopt": "2.2.0",
     "unpm-router": "0.0.1",
     "continuation-local-storage": "3.0.0"
@@ -32,7 +32,7 @@
   "devDependencies": {
     "tape": "2.5.0",
     "memdown": "0.7.0",
-    "blanket": "^1.1.6",
+    "blanket": "1.1.6",
     "coveralls": "2.8.0",
     "glob": "3.2.9",
     "mocha-lcov-reporter": "0.0.1"
