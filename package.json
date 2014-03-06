@@ -1,6 +1,6 @@
 {
   "name": "unpm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "Michael Hayes",
   "dependencies": {
     "concat-stream": "1.4.1",
-    "unpm-leveldb": "0.1.0",
+    "unpm-leveldb": "0.1.2",
     "fnpm-fs-tarballs": "0.0.0",
     "leveldown": "0.10.2",
     "levelup": "0.18.2",
