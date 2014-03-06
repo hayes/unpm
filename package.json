@@ -4,7 +4,7 @@
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
-    "test": "tape ./test/**/*.test.js ./test/**/**/*.test.js",
+    "test": "tape ./test/*.test.js ./test/**/*.test.js ./test/**/**/*.test.js",
     "start": "node bin/server.js",
     "coverage": "node scripts/coverage.js",
     "coveralls": "npm run coverage | ./node_modules/coveralls/bin/coveralls.js"

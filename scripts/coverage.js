@@ -19,36 +19,23 @@ cache.exports = test
 test('load files', function(t) {
   t.plan(4)
 
-  // require all files in lib so that untested files are reflected in coverage
-  glob(path.resolve(__dirname, '../lib/*.js'), function(err, files) {
-    for(var i = 0, len = files.length; i < len; ++i) {
-      require(files[i])
-    }
+  //load all tests and all source files
+  var dirs = [
+      '../lib/*.js'
+    , '../lib/**/*.js'
+    , '../test/*.test.js'
+    , '../test/**/*.test.js'
+  ]
 
-    t.ok(true, 'loaded root files')
-  })
+  dirs.forEach(load)
 
-  glob(path.resolve(__dirname, '../lib/**/*.js'), function(err, files) {
-    for(var i = 0, len = files.length; i < len; ++i) {
-      require(files[i])
-    }
+  function load(dir) {
+    glob(path.resolve(__dirname, dir), function(err, files) {
+      for(var i = 0, len = files.length; i < len; ++i) {
+        require(files[i])
+      }
 
-    t.ok(true, 'loaded nested files')
-  })
-
-  glob(path.resolve(__dirname, '../test/*.test.js'), function(err, files) {
-    for(var i = 0, len = files.length; i < len; ++i) {
-      require(files[i])
-    }
-
-    t.ok(true, 'loaded root tests')
-  })
-
-  glob(path.resolve(__dirname, '../test/**/*.test.js'), function(err, files) {
-    for(var i = 0, len = files.length; i < len; ++i) {
-      require(files[i])
-    }
-
-    t.ok(true, 'loaded nested tests')
-  })
+      t.ok(true, 'loaded ' + dir)
+    })
+  }
 })
