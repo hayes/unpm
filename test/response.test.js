@@ -1,6 +1,4 @@
 var test = require('tape')
-  , assert = require('assert')
-  , stream = require('stream')
 
 var response = require('../lib/responses')
 
@@ -71,7 +69,9 @@ test('verify not found', function(assert) {
   response.not_found(null, res)
 })
 
-test('verify conflict', function(assert) {
+test('verify conflict', verify_conflict)
+
+function verify_conflict(assert) {
   var res = {}
 
   res.writeHead = function(status, headers) {
@@ -93,7 +93,9 @@ test('verify conflict', function(assert) {
   response.conflict(null, res)
 })
 
-test('verify 500', function(assert) {
+test('verify 500', verify_500)
+
+function verify_500(assert) {
   var res = {}
 
   res.writeHead = function(status) {
