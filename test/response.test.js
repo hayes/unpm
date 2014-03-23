@@ -47,7 +47,9 @@ function verify_error_response(assert) {
   response.unauthorized(null, res)
 }
 
-test('verify not found', function(assert) {
+test('verify not found', verify_not_found)
+
+function verify_not_found(assert) {
   var res = {}
 
   res.writeHead = function(status, headers) {
@@ -67,7 +69,7 @@ test('verify not found', function(assert) {
   }
 
   response.not_found(null, res)
-})
+}
 
 test('verify conflict', verify_conflict)
 
@@ -91,7 +93,7 @@ function verify_conflict(assert) {
   }
 
   response.conflict(null, res)
-})
+}
 
 test('verify 500', verify_500)
 
@@ -111,4 +113,4 @@ function verify_500(assert) {
   }
 
   response.on_error(null, res)
-})
+}
