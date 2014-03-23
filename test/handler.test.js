@@ -1,37 +1,60 @@
 var CLS = require('continuation-local-storage')
   , unpm = CLS.createNamespace('unpm')
+  , Router = require('unpm-router')
   , http = require('http')
+  , t = require('assert')
+  , log = require('npmlog')
 
 var handler = require('../lib/handler')
   , test = require('tape')
 
-test('sets the response to continuation local storage', response_is_set)
-test('sets the request to continuation local storage', request_is_set)
-test('500 if route returns error', server_errors_corretly)
-test('writes to response correctly', writes_to_response)
-test('sets route to c.l.s.', matches_correct_route)
+unpm.run(function() {
+  unpm.set('log', log)
+  req_and_resp_saved(t)
+})
 
-function request_is_set() {
-  var req = new http.IncomingMessage
-    , resp = new http.ServerResponse
-}
+function req_and_resp_saved(t) {
+  var router = Router()
+    , options
+    , server
 
-function response_is_set() {
-  var req = new http.IncomingMessage
-    , resp = new http.ServerResponse
-}
+  router.add('GET', 'arbitrary/path', arbitrary_handler)
 
-function calls_route() {
-  var req = new http.IncomingMessage
-    , resp = new http.ServerResponse
-}
+  function arbitrary_handler(req, resp, route, respond) {
+    console.log('handler called')
 
-function writes_to_response() {
-  var req = new http.IncomingMessage
-    , resp = new http.ServerResponse
-}
+    t.equal(req, unpm.get('req'))
+    t.equal(res, unpm.get('res'))
+    t.equal(route, 'route')
 
-function server_errors_corretly() {
-  var req = new http.IncomingMessage
-    , resp = new http.ServerResponse
+    respond(null, 200, {arbitrary: 'data'})
+  }
+
+  unpm.set('router', router)
+
+  server = http.createServer(handler)
+
+  server.listen(8910, on_listen)
+
+  function on_listen() {
+    console.log('listening')
+
+    options = {
+        port: 8910
+      , method: 'GET'
+      , path: 'arbitrary/path'
+      , host: 'localhost'
+    }
+
+    req = http.request(options, function(res) {
+      console.log('got response!')
+
+      t.end()
+    })
+
+    console.log('making request')
+    req.write('hi')
+    req.end()
+    console.log('request made')
+  }
 }
