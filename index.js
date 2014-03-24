@@ -6,7 +6,6 @@ var backend = require('unpm-fs-backend')
 module.exports = function(port) {
   var data_dir = path.join(process.cwd(), 'data')
     , config = {}
-    , db
 
   var tarballs_dir = path.join(data_dir, 'tarballs')
     , user_dir = path.join(data_dir, 'users')
