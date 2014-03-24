@@ -1,7 +1,5 @@
-var fs_tarballs = require('fnpm-fs-tarballs')
-  , backend = require('unpm-leveldb')
+var backend = require('unpm-fs-backend')
   , unpm = require('./lib/index')
-  , levelup = require('levelup')
   , mkdirp = require('mkdirp')
   , path = require('path')
 
@@ -11,10 +9,10 @@ module.exports = function(port) {
     , db
 
   var tarballs_dir = path.join(data_dir, 'tarballs')
+    , user_dir = path.join(data_dir, 'users')
+    , meta_dir = path.join(data_dir, 'meta')
 
-  mkdirp.sync(tarballs_dir)
-  db = levelup(path.join(data_dir, 'db'))
-  config.backend = fs_tarballs(backend(db), tarballs_dir)
+  config.backend = backend(meta_dir, user_dir, tarballs_dir)
 
   unpm(config).server.listen(port || 8123)
   console.log('Started unpm on port %s', port || 8123)
