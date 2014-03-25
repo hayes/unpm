@@ -1,6 +1,6 @@
 {
   "name": "unpm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "private npm registry in node",
   "main": "lib/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "nopt": "2.2.0",
     "unpm-router": "0.0.1",
     "continuation-local-storage": "3.0.0",
-    "unpm-fs-backend": "0.0.0",
+    "unpm-fs-backend": "0.0.1",
     "bunyan": "0.22.1"
   },
   "license": "MIT",
@@ -38,7 +38,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mghayes/unpm.git"
+    "url": "git://github.com/hayes/unpm.git"
   },
   "keywords": [
     "npm",
@@ -50,7 +50,7 @@
     "manager"
   ],
   "bugs": {
-    "url": "https://github.com/mghayes/unpm/issues"
+    "url": "https://github.com/hayes/unpm/issues"
   },
-  "homepage": "https://github.com/mghayes/unpm"
+  "homepage": "https://github.com/hayes/unpm"
 }

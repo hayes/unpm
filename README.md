@@ -3,8 +3,8 @@
 
 Your own private npm
 
-[![Build Status](https://travis-ci.org/mghayes/unpm.png?branch=master)](https://travis-ci.org/mghayes/unpm)
-[![Coverage Status](https://coveralls.io/repos/mghayes/unpm/badge.png?branch=master)](https://coveralls.io/r/mghayes/unpm?branch=master)
+[![Build Status](https://travis-ci.org/hayes/unpm.png?branch=master)](https://travis-ci.org/hayes/unpm)
+[![Coverage Status](https://coveralls.io/repos/hayes/unpm/badge.png?branch=master)](https://coveralls.io/r/hayes/unpm?branch=master)
 ## Usage
 
 To copy a module from the public npm:

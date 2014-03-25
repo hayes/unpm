@@ -8,6 +8,7 @@
   "data_path": "./data",
   "auto_clone_deps": true,
   "public_registry": "http://registry.npmjs.org",
+  "caching_proxy": false,
   "crypto": {
     "algorithm": "sha512",
     "saltLength": 30,
