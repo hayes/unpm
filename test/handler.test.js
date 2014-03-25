@@ -1,10 +1,8 @@
 var CLS = require('continuation-local-storage')
+  , log = require('../lib/logging')({})
   , Router = require('unpm-router')
-  , log = require('npmlog')
   , http = require('http')
   , test = require('tape')
-
-log.level = 'silent'
 
 var unpm = CLS.createNamespace('unpm')
 
