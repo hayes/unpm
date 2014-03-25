@@ -23,7 +23,7 @@
     "nopt": "2.2.0",
     "unpm-router": "0.0.1",
     "continuation-local-storage": "3.0.0",
-    "unpm-fs-backend": "0.0.0"
+    "unpm-fs-backend": "0.0.1"
   },
   "license": "MIT",
   "devDependencies": {
