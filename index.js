@@ -1,11 +1,10 @@
 var backend = require('unpm-fs-backend')
   , unpm = require('./lib/index')
-  , mkdirp = require('mkdirp')
   , path = require('path')
 
-module.exports = function(port) {
+module.exports = function(config) {
   var data_dir = path.join(process.cwd(), 'data')
-    , config = {}
+    , unpm_service
 
   var tarballs_dir = path.join(data_dir, 'tarballs')
     , user_dir = path.join(data_dir, 'users')
@@ -13,6 +12,10 @@ module.exports = function(port) {
 
   config.backend = backend(meta_dir, user_dir, tarballs_dir)
 
-  unpm(config).server.listen(port || 8123)
-  console.log('Started unpm on port %s', port || 8123)
+  unpm_service = unpm(config)
+  unpm_service.server.listen(unpm_service.port)
+
+  if(config.verbose) {
+    console.log('Started unpm on port %s', unpm_service.port)
+  }
 }
