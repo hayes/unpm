@@ -15,7 +15,5 @@ module.exports = function(config) {
   unpm_service = unpm(config)
   unpm_service.server.listen(unpm_service.port)
 
-  if(config.verbose) {
-    console.log('Started unpm on port %s', unpm_service.port)
-  }
+  log.info('Started unpm on port %s', unpm_service.port)
 }
