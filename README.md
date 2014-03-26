@@ -21,6 +21,8 @@ Most normal npm commands work, you will just need to specify the location of
 your μnpm server with a `--registry` flag (or via your `.npmrc` with a
 `registry` entry).
 
+A default configuration file is set in [./lib/config.json](./lib/config.json)
+
 ### Examples
 
 * Install module:
