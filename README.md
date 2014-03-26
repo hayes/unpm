@@ -28,7 +28,7 @@ A default configuration file is set in [./lib/config.json](./lib/config.json).
 You can, of course, pass your own configuration object.  The parameters are as
 follows:
 
-Assuming you have set `config = reuiqre('config.json')`, then `config` will
+Assuming you have set `config = require('config.json')`, then `config` can 
 have the following attributes.
 
 - `config.host`: Describes a base URI at which μnpm's resources will be made
@@ -59,7 +59,7 @@ have the following attributes.
   this function:
 
   ```javascript
-  var url = require('url') //nodes url lib
+  var url = require('url') // node's url lib
   
   function(name, version) {
     var filename = name + '-' + version + '.tgz'
@@ -70,7 +70,9 @@ have the following attributes.
 
 - `config.base_pathname`: The path prefix from which μnpm serves requests.
 - `config.data_path`: The relative path to the directory on disk to which
-  tarballs are written.
+  tarballs are written. If you are using the [default file-system
+  back-end](https://www.npmjs.org/package/unpm-fs-backend), then JSON user and
+  metadata files will be stored here as well.
 - `config.auto_clone_deps`: A boolean which determines whether μnpm clones
   from a public repository module dependencies which it cannot meet. It
   defaults to true.
