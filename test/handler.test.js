@@ -1,28 +1,20 @@
 var get_context = require('../lib/context')
+  , handler = require('../lib/handler')
   , log = require('../lib/logging')({})
   , Router = require('unpm-router')
+  , setup = require('./setup')
   , http = require('http')
-  , test = require('tape')
 
-var handler = require('../lib/handler')
+var test = setup(function(context) {
+  context.log = log
+  context.router = Router()
+})
 
-function setup(test) {
-  get_context.reset()
-
-  return function(t) {
-    get_context.ns.run(function(context) {
-      context.log = log
-      context.router = Router()
-      test(t)
-    })
-  }
-}
-
-test('req and resp saved', setup(req_and_resp_saved))
-test('not found and 500 works', setup(errors_work_as_expected))
+test('req and resp saved', req_and_resp_saved)
+test('not found and 500 works', errors_work_as_expected)
 
 function req_and_resp_saved(t) {
-  var context = get_context.ns.active
+  var context = get_context()
     , router = context.router
     , options
     , server

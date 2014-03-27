@@ -1,4 +1,5 @@
-var test = require('tape')
+var setup = require('./setup')
+  , test = setup()
 
 var response = require('../lib/responses')
 

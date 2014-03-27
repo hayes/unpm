@@ -1,23 +1,15 @@
 var config = require('../../lib/config.json')
   , User = require('../../lib/models/User')
-  , context = require('../../lib/context')
   , backend = require('../backend')
+  , setup = require('../setup')
   , crypto = require('crypto')
-  , test = require('tape')
 
-function setup(test) {
-  context.reset()
+var test = setup(function(context) {
+  context.config = config
+  context.backend = backend()
+})
 
-  return function(t) {
-    context.ns.run(function(context) {
-      context.config = config
-      context.backend = backend()
-      test(t)
-    })
-  }
-}
-
-test('create user', setup(function(t) {
+test('create user', function(t) {
   var user_data = {}
 
   user_data.password_sha = 'hunter2'
@@ -40,9 +32,9 @@ test('create user', setup(function(t) {
   User.create('ZeroCool', {password_sha: 'foo'}, function(err) {
     t.ok(err, 'requires date')
   })
-}))
+})
 
-test('find user', setup(function(t) {
+test('find user', function(t) {
   var data = {
       name: 'ZeroCool'
     , email: 'me@example.com'
@@ -70,9 +62,9 @@ test('find user', setup(function(t) {
       t.ok(!user, 'no user for other guy')
     })
   })
-}))
+})
 
-test('update user', setup(function(t) {
+test('update user', function(t) {
   var data = {
       name: 'ZeroCool'
     , email: 'me@example.com'
@@ -116,9 +108,9 @@ test('update user', setup(function(t) {
     t.ok('_rev', 'gets _rev')
     t.equal(Object.keys(user).length, 4, 'nothing else')
   }
-}))
+})
 
-test('auth user', setup(function(t) {
+test('auth user', function(t) {
   var data = {
       email: 'me@example.com'
     , salt: 'saltine'
@@ -153,7 +145,7 @@ test('auth user', setup(function(t) {
     t.ok(!user, 'no user')
     t.ok(err, 'returns error')
   }
-}))
+})
 
 function sha(s) {
   return crypto.createHash('sha1').update(s).digest('hex')

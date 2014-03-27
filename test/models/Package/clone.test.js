@@ -1,14 +1,8 @@
-var get_context = require('../../../lib/context')
+var clone = require('../../../lib/models/Package/clone')
   , config = require('../../../lib/config.json')
   , log = require('../../../lib/logging')({})
-  , assert = require('assert')
-  , test = require('tape')
+  , setup = require('../../setup')
   , http = require('http')
-  , config = {}
-
-// this needs to be imported after continuation local storage, creates the unpm
-// namespace. Otherwise unpm won't be defined when clone_module executes.
-var clone = require('../../../lib/models/Package/clone')
 
 var fake_meta = {}
 
@@ -26,22 +20,13 @@ config.host = {
 
 config.public_registry = 'public-registry'
 
-function setup(test) {
-  get_context.reset()
+var test = setup(function(context) {
+  context.log = log
+  context.config = config
+})
 
-  return function(t) {
-    get_context.ns.run(function(context) {
-      context.log = log
-      context.config = config
-      test(t)
-    })
-  }
-}
-
-test('can clone', setup(can_clone))
-
-function can_clone(assert) {
-  assert.plan(3)
+test('can clone', function can_clone(t) {
+  t.plan(3)
 
   var FakePackage
     , server
@@ -50,8 +35,8 @@ function can_clone(assert) {
   FakePackage = {}
 
   FakePackage.get_version_meta = function(name, version, done) {
-    assert.strictEqual(name, 'arbitrary-name')
-    assert.strictEqual(version, '1.0.0')
+    t.strictEqual(name, 'arbitrary-name')
+    t.strictEqual(version, '1.0.0')
 
     done(null, fake_meta)
   }
@@ -76,8 +61,8 @@ function can_clone(assert) {
         throw err
       }
 
-      assert.strictEqual(data, fake_meta)
+      t.strictEqual(data, fake_meta)
       server.close()
     }
   }
-}
+})

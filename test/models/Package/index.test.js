@@ -1,23 +1,15 @@
 var Package = require('../../../lib/models/Package')
-  , get_context = require('../../../lib/context')
   , config = require('../../../lib/config.json')
   , backend = require('../../backend')
   , concat = require('concat-stream')
-  , test = require('tape')
+  , setup = require('../../setup')
 
-function setup(test) {
-  get_context.reset()
+var test = setup(function(context) {
+  context.config = config
+  context.backend = backend()
+})
 
-  return function(t) {
-    get_context.ns.run(function(context) {
-      context.config = config
-      context.backend = backend()
-      test(t)
-    })
-  }
-}
-
-test('get and set meta', setup(function(t) {
+test('get and set meta', function(t) {
   var data = {
       foo: 'bar'
   }
@@ -33,9 +25,9 @@ test('get and set meta', setup(function(t) {
     t.ok(!err, 'no error when getting meta')
     t.deepEqual(result, data, 'returned data matches set data')
   }
-}))
+})
 
-test('get and set tarball', setup(function(t) {
+test('get and set tarball', function(t) {
   var stream = Package.set_tarball('unpm', '1.2.3')
     , val = 'abc'
 
@@ -62,4 +54,4 @@ test('get and set tarball', setup(function(t) {
       t.equal(data, val, 'tarball should equal set value')
     }
   }
-}))
+})
