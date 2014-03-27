@@ -1,17 +1,17 @@
-var CLS = require('continuation-local-storage')
-  , unpm = CLS.createNamespace('unpm')
-
 var config = require('../../lib/config.json')
   , User = require('../../lib/models/User')
+  , context = require('../../lib/context')
   , backend = require('../backend')
   , crypto = require('crypto')
   , test = require('tape')
 
 function setup(test) {
+  context.reset()
+
   return function(t) {
-    unpm.run(function() {
-      unpm.set('config', config)
-      unpm.set('backend', backend())
+    context.ns.run(function(context) {
+      context.config = config
+      context.backend = backend()
       test(t)
     })
   }

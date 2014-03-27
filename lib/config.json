@@ -5,6 +5,7 @@
     "port": 8123,
     "pathname": ""
   },
+  "base_pathname": "",
   "data_path": "./data",
   "auto_clone_deps": true,
   "public_registry": "http://registry.npmjs.org",
@@ -13,5 +14,6 @@
     "algorithm": "sha512",
     "saltLength": 30,
     "iterations": 10
-  }
+  },
+  "verbose": true
 }

@@ -1,7 +1,5 @@
-var CLS = require('continuation-local-storage')
-  , unpm = CLS.createNamespace('unpm')
-
 var Package = require('../../../lib/models/Package')
+  , get_context = require('../../../lib/context')
   , config = require('../../../lib/config.json')
   , backend = require('../../backend')
   , concat = require('concat-stream')
@@ -9,9 +7,9 @@ var Package = require('../../../lib/models/Package')
 
 function setup(test) {
   return function(t) {
-    unpm.run(function() {
-      unpm.set('config', config)
-      unpm.set('backend', backend())
+    get_context.ns.run(function(context) {
+      context.config = config
+      context.backend = backend()
       test(t)
     })
   }
@@ -19,7 +17,7 @@ function setup(test) {
 
 test('get and set meta', setup(function(t) {
   var data = {
-    foo: 'bar'
+      foo: 'bar'
   }
 
   t.plan(3)
