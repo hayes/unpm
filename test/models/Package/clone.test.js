@@ -1,5 +1,5 @@
-var config = require('../../../lib/config.json')
-  , context = require('../../../lib/context')
+var get_context = require('../../../lib/context')
+  , config = require('../../../lib/config.json')
   , log = require('../../../lib/logging')({})
   , assert = require('assert')
   , test = require('tape')
@@ -20,19 +20,25 @@ fake_meta.versions['1.0.0'].dist = {tarball: 'url-for-a-tarball'}
 config.host = {
     hostname: 'localhost'
   , protocol: 'http'
-  , port: 8123
+  , port: 81234
   , pathname: ''
 }
 
 config.public_registry = 'public-registry'
 
-context.reset()
-context.ns.run(function(context) {
-  context.log = log
-  context.config = config
+function setup(test) {
+  get_context.reset()
 
-  test('can clone', can_clone)
-})
+  return function(t) {
+    get_context.ns.run(function(context) {
+      context.log = log
+      context.config = config
+      test(t)
+    })
+  }
+}
+
+test('can clone', setup(can_clone))
 
 function can_clone(assert) {
   assert.plan(3)

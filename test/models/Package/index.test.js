@@ -6,6 +6,8 @@ var Package = require('../../../lib/models/Package')
   , test = require('tape')
 
 function setup(test) {
+  get_context.reset()
+
   return function(t) {
     get_context.ns.run(function(context) {
       context.config = config
