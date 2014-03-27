@@ -3,14 +3,13 @@ var config = require('../../../lib/config.json')
   , http = require('http')
 
 var CLS = require('continuation-local-storage')
-  , assert = require('assert')
   , test = require('tape')
 
 var unpm = CLS.createNamespace('unpm')
   , config = {}
 
 // this needs to be imported after continuation local storage, creates the unpm
-// namespace. Otherwise unpm won't be defined when clone_module executes.
+// namespace. Otherwise unpm won't be defined when the module executes.
 var clone = require('../../../lib/models/Package/clone')
 
 var fake_meta = {}
@@ -68,8 +67,6 @@ function can_clone(assert) {
     clone.call(FakePackage, 'arbitrary-name', '1.0.0', false, oncloned)
 
     function oncloned(err, data) {
-      console.log('cloned')
-
       if(err) {
         throw err
       }
