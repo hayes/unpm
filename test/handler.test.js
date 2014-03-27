@@ -1,41 +1,44 @@
-var CLS = require('continuation-local-storage')
+var get_context = require('../lib/context')
   , log = require('../lib/logging')({})
   , Router = require('unpm-router')
   , http = require('http')
   , test = require('tape')
 
-var unpm = CLS.createNamespace('unpm')
-
 var handler = require('../lib/handler')
 
-unpm.run(function() {
-  unpm.set('log', log)
-  test('req and resp saved', req_and_resp_saved)
-})
+function setup(test) {
+  get_context.reset()
 
-unpm.run(function() {
-  unpm.set('log', log)
-  test('not found and 500 works', errors_work_as_expected)
-})
+  return function(t) {
+    get_context.ns.run(function(context) {
+      context.log = log
+      context.router = Router()
+      test(t)
+    })
+  }
+}
+
+test('req and resp saved', setup(req_and_resp_saved))
+test('not found and 500 works', setup(errors_work_as_expected))
 
 function req_and_resp_saved(t) {
-  var router = Router()
+  var context = get_context.ns.active
+    , router = context.router
     , options
     , server
 
   router.add('GET', '/arbitrary/path', arbitrary_handler)
 
   function arbitrary_handler(req, res, route, respond) {
+    var context = get_context()
 
-    t.equal(req, unpm.get('req'))
-    t.equal(res, unpm.get('res'))
-    t.equal(route, unpm.get('route'))
+    t.equal(req, context.req)
+    t.equal(res, context.res)
+    t.equal(route, context.route)
     t.equal(route.route, '/arbitrary/path')
 
     respond(null, 200, {arbitrary: 'data'})
   }
-
-  unpm.set('router', router)
 
   server = http.createServer(handler)
 
@@ -59,19 +62,17 @@ function req_and_resp_saved(t) {
 }
 
 function errors_work_as_expected(t) {
-  t.plan(2)
-
-  var router = Router()
+  var context = get_context()
+    , router = context.router
     , options
     , server
 
+  t.plan(2)
   router.add('GET', '/500', handler_500)
 
   function handler_500(req, res, route, respond) {
     respond(new Error('woo!'))
   }
-
-  unpm.set('router', router)
 
   server = http.createServer(handler)
 

@@ -1,12 +1,9 @@
 var config = require('../../../lib/config.json')
+  , context = require('../../../lib/context')
   , log = require('../../../lib/logging')({})
-  , http = require('http')
-
-var CLS = require('continuation-local-storage')
   , assert = require('assert')
   , test = require('tape')
-
-var unpm = CLS.createNamespace('unpm')
+  , http = require('http')
   , config = {}
 
 // this needs to be imported after continuation local storage, creates the unpm
@@ -29,9 +26,10 @@ config.host = {
 
 config.public_registry = 'public-registry'
 
-unpm.run(function() {
-  unpm.set('log', log)
-  unpm.set('config', config)
+context.reset()
+context.ns.run(function(context) {
+  context.log = log
+  context.config = config
 
   test('can clone', can_clone)
 })
@@ -62,14 +60,12 @@ function can_clone(assert) {
     res.end(JSON.stringify(fake_meta))
   })
 
-  server.listen(8123, onlistening)
+  server.listen(81234, onlistening)
 
   function onlistening() {
     clone.call(FakePackage, 'arbitrary-name', '1.0.0', false, oncloned)
 
     function oncloned(err, data) {
-      console.log('cloned')
-
       if(err) {
         throw err
       }
