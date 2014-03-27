@@ -28,6 +28,7 @@ function unpm(ns, config) {
   this.handler = handler
   this.router = router
   this.config = config
+  this.middleware = []
 
   // auth
   router.add('GET', routes.get_user, auth.user)
