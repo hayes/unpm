@@ -2,7 +2,7 @@
   "name": "unpm",
   "version": "0.0.7",
   "description": "private npm registry in node",
-  "main": "lib/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "tape ./test/*.test.js ./test/**/*.test.js ./test/**/**/*.test.js",
     "start": "node bin/server.js | bunyan",
