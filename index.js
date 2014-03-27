@@ -3,6 +3,8 @@ var load_config = require('./lib/config')
   , unpm = require('./lib/index')
   , path = require('path')
 
+var CWD = process.cwd()
+
 module.exports = function(config) {
   var unpm_service
     , tarballs_dir
@@ -11,17 +13,16 @@ module.exports = function(config) {
 
   config = load_config(config || {})
 
-  config.data_path = config.data_path ? path.normalize(config.data_path) :
-      path.join(process.cwd(), 'data')
+  if(!config.backend) {
+    tarballs_dir = path.join(CWD, 'tarballs')
+    user_dir = path.join(CWD, 'users')
+    meta_dir = path.join(CWD, 'meta')
 
-  tarballs_dir = path.join(config.data_path, 'tarballs')
-  user_dir = path.join(config.data_path, 'users')
-  meta_dir = path.join(config.data_path, 'meta')
-
-  config.backend = backend(meta_dir, user_dir, tarballs_dir)
+    config.backend = backend(meta_dir, user_dir, tarballs_dir)
+  }
 
   unpm_service = unpm(config)
-  unpm_service.server.listen(unpm_service.port)
+  unpm_service.server.listen(unpm_service.config.port)
 
-  unpm_service.log.info('Started unpm on port %s', unpm_service.port)
+  unpm_service.log.info('Started unpm on port %s', unpm_service.config.port)
 }
