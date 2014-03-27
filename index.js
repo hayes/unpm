@@ -1,5 +1,5 @@
-var backend = require('unpm-fs-backend')
-  , load_config = require('./config')
+var load_config = require('./lib/config')
+  , backend = require('unpm-fs-backend')
   , unpm = require('./lib/index')
   , path = require('path')
 
@@ -11,9 +11,12 @@ module.exports = function(config) {
 
   config = load_config(config || {})
 
-  tarballs_dir = path.join(config.data_dir, 'tarballs')
-  user_dir = path.join(config.data_dir, 'users')
-  meta_dir = path.join(config.data_dir, 'meta')
+  config.data_path = config.data_path ? path.normalize(config.data_path) :
+      path.join(process.cwd(), 'data')
+
+  tarballs_dir = path.join(config.data_path, 'tarballs')
+  user_dir = path.join(config.data_path, 'users')
+  meta_dir = path.join(config.data_path, 'meta')
 
   config.backend = backend(meta_dir, user_dir, tarballs_dir)
 
