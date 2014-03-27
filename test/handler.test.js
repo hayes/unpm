@@ -112,7 +112,7 @@ function errors_work_as_expected(t) {
 function test_middleware(t) {
   var context = get_context()
     , router = context.router
-    , special = special
+    , special = {}
     , options
     , server
 
