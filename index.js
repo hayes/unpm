@@ -40,10 +40,6 @@ function unpm(ns, config) {
   router.add('PUT', routes.publish, packages.publish)
   router.add('GET', routes.get_tarball, packages.get_tarball)
   router.add('GET', routes.get_package, packages.get_package)
-
-  // clone from public npm
-  router.add('POST', routes.clone, packages.clone)
-  router.add('POST', routes.get_deps, packages.get_deps)
 }
 
 var routes = {
@@ -52,8 +48,6 @@ var routes = {
   , get_user: '/-/user/org.couchdb.user:*'
   , get_tarball: '/:name/-/*-*.tgz'
   , publish: '/:name'
-  , clone: '/clone/:name/:version?'
-  , get_deps: '/get_deps/:name/:version?'
   , session: '/_session'
   , register: '/-/user/org.couchdb.user:*'
   , update_user: '/-/user/org.couchdb.user:*/*'
