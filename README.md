@@ -6,9 +6,9 @@ Your own private npm
 [![Build Status](https://travis-ci.org/hayes/unpm.png?branch=master)](https://travis-ci.org/hayes/unpm)
 [![Coverage Status](https://coveralls.io/repos/hayes/unpm/badge.png?branch=master)](https://coveralls.io/r/hayes/unpm?branch=master)
 
-## Installation and Usage:
+## Installation and Usage
 
-### Command line:
+### Command line
 
 If you just want a &mu;npm with the default configuration:
 
@@ -20,6 +20,14 @@ Now you have your own npm running at `localhost:8123`.
 
 > You also have a directory called `$(pwd)/data`, which will hold flat files
 > with data on your users, packages, etc.
+
+#### Command line options
+
+The default command line tool accepts the following flags:
+
+- `--port, -p <number>`: Run &mu;npm's http server on port `<number>`
+- `--verbose, -v`: Enable logging to stdout
+- `--log, -l`: 
 
 To copy a module from the public npm:
 
@@ -81,12 +89,12 @@ The &mu;npm service instance has the following attributes:
   server](http://nodejs.org/api/http.html#http_class_http_server) instance
   which will service the npm api, and the additional resources defined for
   &mu;npm.
-- `log`: The logging object. Has methods `info` and `warn`, which should
+- `log`: The logging object. Has methods `info` and `error`, which should
   support the [Bunyan logging
   API](https://github.com/trentm/node-bunyan#log-method-api).
-- `backend`: The &mu;npm backend. This is a module which encapsulates persistence
-  logic for &mu;npm. It defaults to a [file-system backend][fs-back], but is of
-  course configurable.
+- `backend`: The &mu;npm backend. This is a module which encapsulates
+  persistence logic for &mu;npm. It defaults to a
+  [file-system backend][fs-back], but is of course configurable.
 - `router`: The router which defines what logic to invoke for a given requests.
   It is an instance of [&mu;npm-router](https://github.com/hayes/unpm-router)
 - `config`: The `config` object passed to the constructor.
@@ -95,12 +103,14 @@ The &mu;npm service instance has the following attributes:
 ## Configuration
 
 A default configuration file is set in [./lib/config.json](./lib/config.json).
-You can override these defaults by defining a `UNPM_CONFIG` environment
-variable, also a json file.
+Any configuration options that are not explicitly passed to &mu;npm (via
+`unpm(config)`) will default to the values in that file.
 
-You can set the following values from the JSON file:
+You can set the following values as configuration options:
 
-- `config.host`:  `config.host` is passed directly to
+#### `config.host`
+
+  `config.host` is passed directly to
   [`url.format`](http://nodejs.org/api/url.html#url_url_format_urlobj)
 
   Describes a base URI at which &mu;npm's resources will be made
@@ -138,26 +148,45 @@ You can set the following values from the JSON file:
   }
   ```
 
-- `config.base_pathname`: The path prefix from which &mu;npm serves requests.
-- `config.data_path`: The relative path to the directory on disk to which
-  tarballs are written. If you are using the [default file-system
-  back-end][fs-back], then JSON user and
-  metadata files will be stored here as well.
-- `config.auto_clone_deps`: A boolean which determines whether &mu;npm clones
-  from a public repository module dependencies which it cannot meet. It
-  defaults to true.
-- `config.public_registry`: The URI for a public npm which hosts a larger
-  universe of modules you might require.
-- `caching_proxy`: A Boolean determining whether &mu;npm should look to the
+#### `config.base_pathname`
+
+  The path prefix from which &mu;npm serves requests.
+
+#### `config.auto_clone_deps`
+
+  A boolean which determines whether &mu;npm clones from a public repository
+  module dependencies which it cannot meet. It defaults to true.
+
+#### `config.public_registry`
+
+  The URI for a public npm which hosts a larger universe of modules you might
+  require.
+
+#### `config.caching_proxy`
+
+  A Boolean determining whether &mu;npm should look to the
   `config.public_registry` for packages it does not have.
-- `config.crypto`: An object to be passed to
-  require('[password-hash][password-hash]').generate as its second argument,
-  when hashing passwords.
-- `config.verbose`: If true, causes log level info is printed to standard out.
-  If `config.verbose` is false, but `config.log` is true, logs are simply
-  printed to a rotating set of log files.
-- `config.log`: If true, prints logs, otherwise no logs will be printed.
-- `config.log_dir`: The directory into which to write logs.
+
+#### `config.crypto`
+
+  An object to be passed to require('[password-hash][password-hash]').generate
+  as its second argument, when hashing passwords.
+
+#### `config.verbose`
+
+  If true, causes log level info to be printed to standard out.
+
+#### `config.log`
+
+  If true, saves logs, otherwise no logs will be printed. Stores rotational
+  file logs with a period of one day, keeping 10 days worth of archives.
+
+#### `config.log_dir`
+
+  The directory into which to write logs. If this option is defined, but
+  `config.log` is not specifically set, logs **will** still be written. If
+  this option is not defined, but `config.log` is set, logs will be written
+  to the current working directory.
 
 ## License
 
