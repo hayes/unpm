@@ -154,16 +154,6 @@ You can set the following values as configuration options:
 
   The path prefix from which &mu;npm serves requests.
 
-#### `config.public_registry`
-
-  The URI for a public npm which hosts a larger universe of modules you might
-  require.
-
-#### `config.caching_proxy`
-
-  A Boolean determining whether &mu;npm should look to the
-  `config.public_registry` for packages it does not have.
-
 #### `config.crypto`
 
   An object to be passed to require('[password-hash][password-hash]').generate
