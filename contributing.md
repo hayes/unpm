@@ -54,13 +54,16 @@ accordingly. Make a note of the API in the PR description so the maintainers
 can update the [semantic version](http://semver.org/) appropriately. 
 
 We expect your code to pass our style guide, handily encoded by the javascript
-library, [jsl](https://www.npmjs.org/package/jsl). So before submitting your
-PR, `npm install -g jsl`, and then run `jsl` on all the files you have changed.
-If it exits with a non-zero status code, expect the maintainers to correct your
-style.
+library, [jsl](https://www.npmjs.org/package/jsl). This is enforced
+by a [test](./test/style.test.js') which runs the linter on all code which can
+be required from the entry point, [./index.js](./index.js).
 
-We will also review the substance of your code. Our criteria are roughly as
-follows:
+It is still up to you to verify any style on scripts, tests, or commands you
+add. Before submitting your PR, `npm install -g jsl`, and then run `jsl` on all
+such files you have changed. If it exits with a non-zero status code, expect
+the maintainers to correct your style.
+
+We will also review the substance of your code. Our philosophy is roughly:
 
 - [Keep it simple](http://www.infoq.com/presentations/Simple-Made-Easy).
 - [Avoid more abstraction than necessary](https://www.youtube.com/watch?v=_ahvzDzKdB0).

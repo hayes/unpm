@@ -34,7 +34,8 @@
     "glob": "3.2.9",
     "mocha-lcov-reporter": "0.0.1",
     "levelup": "0.18.2",
-    "unpm-leveldb": "0.1.2"
+    "unpm-leveldb": "0.1.2",
+    "jsl": "^0.1.1"
   },
   "repository": {
     "type": "git",
