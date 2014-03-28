@@ -6,8 +6,6 @@
     "pathname": ""
   },
   "base_pathname": "",
-  "public_registry": "http://registry.npmjs.org",
-  "caching_proxy": false,
   "crypto": {
     "algorithm": "sha512",
     "saltLength": 30,
