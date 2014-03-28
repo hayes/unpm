@@ -56,7 +56,7 @@ npm adduser --registry http://localhost:8123
 
 #### Useful tools
 
-- [http://npm.im/clone-packages](clone-packages) allows you to clone packages
+- [clone-packages](http://npm.im/clone-packages) allows you to clone packages
 from one npm registry to another.
 
 ### As a node module
