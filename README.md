@@ -27,15 +27,12 @@ The default command line tool accepts the following flags:
 
 - `--port, -p <number>`: Run &mu;npm's http server on port `<number>`
 - `--verbose, -v`: Enable logging to stdout
-- `--log, -l`: 
+- `--log, -l`: Store logs on the file system
+- `--logdir, -L`: Path for log storage, defaults to `$(pwd)`
+- `--datadir, -d`: Path for storing tarballs and data files, defaults to
+`$(pwd)/data`
 
-To copy a module from the public npm:
-
-`curl http://localhost:8123/clone/module-name/1.1.1?recursive=true -X POST`
-
-To clone deps for a module already in &mu;npm:
-
-`curl http://localhost:8123/get_deps/module-name/1.1.1?recursive=true -X POST`
+#### Extended usage
 
 Now use `npm` as normal-- simply specify the URI of the running &mu;npm service
 via the `--registry` flag, or with the `registry` parameter of your `.npmrc`.
@@ -56,6 +53,11 @@ npm install --registry http://localhost:8123
 # Add a user:
 npm adduser --registry http://localhost:8123
 ```
+
+#### Useful tools
+
+- [http://npm.im/clone-packages](clone-packages) allows you to clone packages
+from one npm registry to another.
 
 ### As a node module
 
@@ -151,11 +153,6 @@ You can set the following values as configuration options:
 #### `config.base_pathname`
 
   The path prefix from which &mu;npm serves requests.
-
-#### `config.auto_clone_deps`
-
-  A boolean which determines whether &mu;npm clones from a public repository
-  module dependencies which it cannot meet. It defaults to true.
 
 #### `config.public_registry`
 
