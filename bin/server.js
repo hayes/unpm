@@ -34,7 +34,9 @@ var unpm_service
 
 config = load_config(config || {})
 
-data_dir = path.normalize(config.datadir) || path.join(CWD, 'data')
+data_dir = config.datadir ?
+  path.normalize(config.datadir) :
+  path.join(CWD, 'data')
 
 if(!config.backend) {
   tarballs_dir = path.join(data_dir, 'tarballs')
@@ -45,6 +47,6 @@ if(!config.backend) {
 }
 
 unpm_service = unpm(config)
-unpm_service.server.listen(unpm_service.config.port)
+unpm_service.server.listen(unpm_service.config.host.port)
 
-unpm_service.log.info('Started unpm on port %s', unpm_service.config.port)
+unpm_service.log.info('Started unpm on port %s', unpm_service.config.host.port)
