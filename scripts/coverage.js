@@ -1,6 +1,5 @@
 var cov = require('mocha-lcov-reporter')
   , blanket = require('blanket')
-  , glob = require('glob')
   , path = require('path')
   , tape = require('tape')
   , test

@@ -23,18 +23,16 @@
     "unpm-router": "0.0.2",
     "continuation-local-storage": "3.0.0",
     "unpm-fs-backend": "0.0.1",
+    "unpm-auth": "0.0.3",
     "bunyan": "0.22.1"
   },
   "license": "MIT",
   "devDependencies": {
     "tape": "2.5.0",
-    "memdown": "0.7.0",
     "blanket": "1.1.6",
     "coveralls": "2.8.0",
-    "glob": "3.2.9",
     "mocha-lcov-reporter": "0.0.1",
-    "levelup": "0.18.2",
-    "unpm-leveldb": "0.1.2",
+    "unpm-mem-backend": "0.0.0",
     "jsl": "^0.1.1"
   },
   "repository": {

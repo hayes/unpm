@@ -3,6 +3,7 @@ var controllers = require('./lib/controllers')
   , logging = require('./lib/logging')
   , context = require('./lib/context')
   , Router = require('unpm-router')
+  , auth = require('unpm-auth')
   , http = require('http')
 
 module.exports = setup
@@ -28,6 +29,8 @@ function unpm(ns, config) {
   self.config = config
   self.middleware = []
   self.backend = {}
+  auth(self)
+
 
   Object.keys(config.backend).forEach(function(key) {
     self.backend[key] = function() {

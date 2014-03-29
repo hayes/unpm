@@ -1,6 +1,6 @@
 var Package = require('../../lib/models/Package')
+  , backend = require('unpm-mem-backend')
   , concat = require('concat-stream')
-  , backend = require('../backend')
   , setup = require('../setup')
 
 var test = setup(function(context) {
