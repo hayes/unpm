@@ -16,26 +16,5 @@ var cache = require.cache[
 
 cache.exports = test
 
-test('load files', function(t) {
-  t.plan(4)
-
-  //load all tests and all source files
-  var dirs = [
-      '../lib/*.js'
-    , '../lib/**/*.js'
-    , '../test/*.test.js'
-    , '../test/**/*.test.js'
-  ]
-
-  dirs.forEach(load)
-
-  function load(dir) {
-    glob(path.resolve(__dirname, dir), function(err, files) {
-      for(var i = 0, len = files.length; i < len; ++i) {
-        require(files[i])
-      }
-
-      t.ok(true, 'loaded ' + dir)
-    })
-  }
-})
+require('../index')
+require('../test')
