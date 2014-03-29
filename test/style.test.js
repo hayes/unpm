@@ -8,6 +8,6 @@ test(
 )
 
 test(
-    'code passes linter'
+    'test code passes linter'
   , style.test([path.resolve(__dirname, 'index.js')])
 )
