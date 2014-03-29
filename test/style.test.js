@@ -6,3 +6,8 @@ test(
     'code passes linter'
   , style.test([path.resolve(__dirname, '..', 'index.js')])
 )
+
+test(
+    'code passes linter'
+  , style.test([path.resolve(__dirname, 'index.js')])
+)

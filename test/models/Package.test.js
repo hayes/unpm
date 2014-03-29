@@ -1,11 +1,9 @@
 var Package = require('../../lib/models/Package')
-  , config = require('../../lib/config.json')
   , concat = require('concat-stream')
   , backend = require('../backend')
   , setup = require('../setup')
 
 var test = setup(function(context) {
-  context.config = config
   context.backend = backend()
 })
 
