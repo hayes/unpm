@@ -1,19 +1,32 @@
 var context = require('../lib/context')
-  , test = require('tape')
+  , tape = require('tape')
 
 module.exports = setup
 
-function setup(create_context) {
+function setup(up, down, run) {
   return function add_test(name, fn) {
-    test(name, function(t) {
+    var test_context
+
+    var test = tape(name, function(t) {
       context.reset()
       context.run(function(new_context) {
-        if(create_context) {
-          new_context = create_context(new_context) || new_context
-        }
-
-        fn.bind(new_context)(t)
+        test_context = up ? (up(new_context) || new_context) : new_context
+        fn.bind(test_context)(t)
       })
     })
+
+    if(down) {
+      test.on('end', function() {
+        context.ns.bind(down, test_context)(test_context)
+      })
+    }
+
+    if(run) {
+      test.on('run', function() {
+        context.ns.bind(run, test_context)(test_context)
+      })
+    }
+
+    return test
   }
 }
