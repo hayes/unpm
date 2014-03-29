@@ -1,54 +1,47 @@
-var SessionStore = require('./lib/models/SessionStore')
-  , packages = require('./lib/controllers/packages')
-  , auth = require('./lib/controllers/auth')
+var controllers = require('./lib/controllers')
   , handler = require('./lib/handler')
   , logging = require('./lib/logging')
-  , ns = require('./lib/context').ns
+  , context = require('./lib/context')
   , Router = require('unpm-router')
   , http = require('http')
 
 module.exports = setup
 
 function setup(config) {
-  return ns.run(function(context) {
-    unpm.call(context, ns, config)
+  return context.ns.run(function(new_context) {
+    unpm.call(new_context, context.ns, config)
   })
 }
 
 function unpm(ns, config) {
   var router = Router(config.base_pathname)
+    , self = this
 
   handler = ns.bind(handler)
 
-  this.sessions = config.sessions || SessionStore()
-  this.server = http.createServer(handler)
-  this.log = logging(config)
-  this.port = config.port || 8123
-  this.backend = config.backend
-  this.handler = handler
-  this.router = router
-  this.config = config
-  this.middleware = []
+  self.server = http.createServer(handler)
+  self.log = logging(config)
+  self.port = config.port || 8123
+  self.handler = handler
+  self.get_context = {}
+  self.router = router
+  self.config = config
+  self.middleware = []
+  self.backend = {}
 
-  // auth
-  router.add('GET', routes.get_user, auth.user)
-  router.add('PUT', routes.register, auth.register)
-  router.add('PUT', routes.update_user, auth.update)
-  router.add('POST', routes.session, auth.sessions.create)
+  Object.keys(config.backend).forEach(function(key) {
+    self.backend[key] = function() {
+      var args = [].slice.call(arguments)
 
-  // packages
-  router.add('PUT', routes.publish, packages.publish)
-  router.add('GET', routes.get_tarball, packages.get_tarball)
-  router.add('GET', routes.get_package, packages.get_package)
-}
+      if(typeof args[args.length - 1] === 'function') {
+        args.push(ns.bind(args.pop()))
+      }
 
-var routes = {
-    index: '/'
-  , get_package: '/:name/:version?'
-  , get_user: '/-/user/org.couchdb.user:*'
-  , get_tarball: '/:name/-/*-*.tgz'
-  , publish: '/:name'
-  , session: '/_session'
-  , register: '/-/user/org.couchdb.user:*'
-  , update_user: '/-/user/org.couchdb.user:*/*'
+      return config.backend[key].apply(self.backend, args)
+    }
+  })
+
+  router.add('PUT', '/:name', controllers.publish)
+  router.add('GET', '/:name/-/*-*.tgz', controllers.get_tarball)
+  router.add('GET', '/:name/:version?', controllers.get_package)
 }

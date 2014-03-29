@@ -22,11 +22,11 @@ function req_and_resp_saved(t) {
 
   router.add('GET', '/arbitrary/path', arbitrary_handler)
 
-  function arbitrary_handler(req, res, route, respond) {
+  function arbitrary_handler(ctx, route, respond) {
     var context = get_context()
 
-    t.equal(req, context.req)
-    t.equal(res, context.res)
+    t.equal(ctx.req, context.req)
+    t.equal(ctx.res, context.res)
     t.equal(route, context.route)
     t.equal(route.route, '/arbitrary/path')
 
@@ -63,7 +63,7 @@ function errors_work_as_expected(t) {
   t.plan(2)
   router.add('GET', '/500', handler_500)
 
-  function handler_500(req, res, route, respond) {
+  function handler_500(context, route, respond) {
     respond(new Error('woo!'))
   }
 
@@ -120,7 +120,7 @@ function test_middleware(t) {
 
   router.add('GET', '/arbitrary/path', arbitrary_handler)
 
-  function arbitrary_handler(req, res, route, respond) {
+  function arbitrary_handler(context, route, respond) {
     t.strictEqual(special, get_context().special)
     respond(null, 200, {arbitrary: 'data'})
   }
