@@ -31,7 +31,6 @@ function unpm(ns, config) {
   self.backend = {}
   auth(self)
 
-
   Object.keys(config.backend).forEach(function(key) {
     self.backend[key] = function() {
       var args = [].slice.call(arguments)
