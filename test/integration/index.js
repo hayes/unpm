@@ -22,6 +22,16 @@ function end(unpm_service) {
   assert.end()
 }
 
+function nest(functions) {
+  if(!functions.length) {
+    return
+  }
+
+  functions.shift()(function() {
+    nest(functions)
+  })
+}
+
 verify_default_configuration(assert)
 
 function verify_default_configuration(assert) {
@@ -52,10 +62,20 @@ function verify_default_configuration(assert) {
   function on_server_listening() {
     // Put a package in unpm, then get it and make sure it's what we put in
     // there in the first place.
-    put_package()
+    var fns = [
+        put_package
+      , try_putting_again
+      , bump_version_and_put
+      , get_latest
+      , get_nonexistent_version
+      , get_old_version
+      , end.bind(null, unpm_service)
+    ]
+
+    nest(fns)
   }
 
-  function put_package() {
+  function put_package(done) {
     var req_options = {
         uri: url.format(config.host) + '/unpm'
       , body: JSON.stringify(fixture)
@@ -68,11 +88,11 @@ function verify_default_configuration(assert) {
       assert.ok(data)
       assert.strictEqual(data.statusCode, 201)
 
-      try_putting_again()
+      done()
     }
   }
 
-  function try_putting_again() {
+  function try_putting_again(done) {
     var req_options = {
         uri: url.format(config.host) + '/unpm'
       , body: JSON.stringify(fixture)
@@ -90,10 +110,10 @@ function verify_default_configuration(assert) {
       assert.strictEqual(data.statusCode, 409)
     }
 
-    bump_version_and_put()
+    done()
   }
 
-  function bump_version_and_put() {
+  function bump_version_and_put(done) {
     var latest = Object.keys(fixture.versions).sort(semver.lt)[0]
 
     var new_version = latest.split('.')
@@ -124,11 +144,11 @@ function verify_default_configuration(assert) {
 
       assert.strictEqual(data.statusCode, 201)
 
-      get_latest()
+      done()
     }
   }
 
-  function get_latest() {
+  function get_latest(done) {
     var req_options = {
         uri: url.format(config.host) + '/unpm'
       , body: JSON.stringify(fixture)
@@ -139,7 +159,7 @@ function verify_default_configuration(assert) {
     function onget(err, data) {
       assert.ok(!err)
       assert.ok(data)
-      assert.ok(data.statusCode, 201)
+      assert.strictEqual(data.statusCode, 200)
 
       var body = JSON.parse(data.body)
 
@@ -164,7 +184,52 @@ function verify_default_configuration(assert) {
         assert.deepEqual(body[key], fixture[key])
       }
 
-      end(unpm_service)
+      done()
+    }
+  }
+
+  function get_nonexistent_version(done) {
+    var req_options = {
+        uri: url.format(config.host) + '/unpm/0.0.1'
+      , body: JSON.stringify(fixture)
+    }
+
+    var req = request.get(req_options, onget)
+
+    function onget(err, data) {
+      assert.ok(!err)
+      assert.ok(data)
+      assert.strictEqual(data.statusCode, 404)
+
+      var body = JSON.parse(data.body)
+
+      var expected_tarballs = []
+        , result_tarballs = []
+
+      assert.strictEqual(body.error, 'not_found')
+      assert.strictEqual(body.reason, 'Document not found.')
+
+      done()
+    }
+  }
+
+  function get_old_version(done) {
+    var req_options = {
+        uri: url.format(config.host) + '/unpm/0.0.9'
+      , body: JSON.stringify(fixture)
+    }
+
+    var req = request.get(req_options, onget)
+
+    function onget(err, data) {
+      assert.ok(!err)
+      assert.ok(data)
+      assert.strictEqual(data.statusCode, 201)
+
+      var expected_tarballs = []
+        , result_tarballs = []
+
+      done()
     }
   }
 }
