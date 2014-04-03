@@ -13,10 +13,6 @@ function start(unpm_service, port, on_server_listening) {
   )
 }
 
-function end(unpm_service, assert) {
-  assert.end()
-}
-
 function nest(functions) {
   if(!functions.length) {
     return
@@ -27,30 +23,30 @@ function nest(functions) {
   })
 }
 
-test('default configuration', verify_default_configuration)
+var config = {}
+  , unpm_service
 
-function verify_default_configuration(assert) {
-  var config = {}
-    , unpm_service
+config.host = {}
+config.host.hostname = 'localhost'
+config.host.protocol = 'http'
+config.host.port = 8124
+config.host.pathname = ''
 
-  config.host = {}
-  config.host.hostname = 'localhost'
-  config.host.protocol = 'http'
-  config.host.port = 8124
-  config.host.pathname = ''
+config.base_pathname = ''
 
-  config.base_pathname = ''
+config.crypto = {}
+config.crypto.algorithm = 'sha512'
+config.crypto.saltLength = 30
+config.crypto.iterations = 10
 
-  config.crypto = {}
-  config.crypto.algorithm = 'sha512'
-  config.crypto.saltLength = 30
-  config.crypto.iterations = 10
+config.verbose = false
 
-  config.verbose = true
+config.backend = backend()
 
-  config.backend = backend()
+verify(config)
 
-  unpm_service = unpm(config)
+function verify(config) {
+  var unpm_service = unpm(config)
 
   start(unpm_service, config.host.port, on_server_listening)
 
@@ -66,48 +62,48 @@ function verify_default_configuration(assert) {
       , get_old_version
       , get_tarball
       , unpm_service.server.close.bind(unpm_service.server)
-      , assert.end.bind(assert)
     ]
 
     nest(fns)
   }
 
   function put_package(done) {
-    var req_options = {
-        uri: url.format(config.host) + '/unpm'
-      , body: JSON.stringify(fixture)
-    }
+    test('Can publish a package', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm'
+        , body: JSON.stringify(fixture)
+      }
 
-    var req = request.put(req_options, onput)
+      var req = request.put(req_options, onput)
 
-    function onput(err, data) {
-      assert.ok(!err)
-      assert.ok(data)
-      assert.strictEqual(data.statusCode, 201)
+      function onput(err, data) {
+        t.ok(!err, 'Put request does not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 201, '201s')
+        t.end()
 
-      done()
-    }
+        done()
+      }
+    })
   }
 
   function try_putting_again(done) {
-    var req_options = {
-        uri: url.format(config.host) + '/unpm'
-      , body: JSON.stringify(fixture)
-    }
-
-    var req = request.put(req_options, onput)
-
-    function onput(err, data) {
-      if(err) {
-        console.log(err)
+    test('putting the same package/version twice 409s', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm'
+        , body: JSON.stringify(fixture)
       }
 
-      assert.ok(!err)
-      assert.ok(data)
-      assert.strictEqual(data.statusCode, 409)
-    }
+      var req = request.put(req_options, onput)
 
-    done()
+      function onput(err, data) {
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 409, 'Responds with 409')
+        t.end()
+        done()
+      }
+    })
   }
 
   function bump_version_and_put(done) {
@@ -131,133 +127,159 @@ function verify_default_configuration(assert) {
     fixture._attachments[fixture.name + '-' + new_version + '.tgz'] =
       fixture._attachments[fixture.name + '-' + latest + '.tgz']
 
+    test('Bumping version and publishing works', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm'
+        , body: JSON.stringify(fixture)
+      }
 
-    var req_options = {
-        uri: url.format(config.host) + '/unpm'
-      , body: JSON.stringify(fixture)
-    }
+      var req = request.put(req_options, onput)
 
-    var req = request.put(req_options, onput)
+      function onput(err, data) {
+        t.ok(!err, 'No error')
+        t.ok(data, 'Has data')
 
-    function onput(err, data) {
-      assert.ok(!err)
-      assert.ok(data)
+        t.strictEqual(data.statusCode, 201, 'Is a 201, for updated resource')
+        t.end()
 
-      assert.strictEqual(data.statusCode, 201)
-
-      done()
-    }
+        done()
+      }
+    })
   }
 
   function get_latest(done) {
-    var req_options = {
-        uri: url.format(config.host) + '/unpm'
-      , body: JSON.stringify(fixture)
-    }
-
-    var req = request.get(req_options, onget)
-
-    function onget(err, data) {
-      assert.ok(!err)
-      assert.ok(data)
-      assert.strictEqual(data.statusCode, 200)
-
-      var body = JSON.parse(data.body)
-
-      var expected_tarballs = []
-        , result_tarballs = []
-
-      for(var v in body.versions) {
-        result_tarballs.push(body.versions[v].dist.tarball)
+    test('GET package returns latest metadata', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm'
+        , body: JSON.stringify(fixture)
       }
 
-      for(var v in fixture.versions) {
-        expected_tarballs.push(
-            url.format(config.host) + '/unpm/-/unpm-' + v + '.tgz'
+      var req = request.get(req_options, onget)
+
+      function onget(err, data) {
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 200, '200s')
+
+        var body = JSON.parse(data.body)
+
+        var expected_tarballs = []
+          , result_tarballs = []
+
+        for(var v in body.versions) {
+          result_tarballs.push(body.versions[v].dist.tarball)
+        }
+
+        for(var v in fixture.versions) {
+          expected_tarballs.push(
+              url.format(config.host) + '/unpm/-/unpm-' + v + '.tgz'
+          )
+        }
+
+        t.deepEqual(
+            result_tarballs
+          , expected_tarballs
+          , 'Tarballs urls look right'
         )
+
+        // The body has more keys than the fixture, which should be redundant
+        // with the fixture.
+        for(var key in body) {
+          t.deepEqual(
+              body[key]
+            , fixture[key]
+            , 'Key ' + key + ' matches between fixture and response body'
+          )
+        }
+
+        t.end()
+        done()
       }
-
-      assert.deepEqual(result_tarballs[0], expected_tarballs[0])
-
-      // The body has more keys than the fixture, which should be redundant
-      // with the fixture.
-      for(var key in body) {
-        assert.deepEqual(body[key], fixture[key])
-      }
-
-      done()
-    }
+    })
   }
 
   function get_nonexistent_version(done) {
-    var req_options = {
-        uri: url.format(config.host) + '/unpm/0.0.1'
-      , body: JSON.stringify(fixture)
-    }
+    test('GET nonexistent version 404s', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm/0.0.1'
+        , body: JSON.stringify(fixture)
+      }
 
-    var req = request.get(req_options, onget)
+      var req = request.get(req_options, onget)
 
-    function onget(err, data) {
-      assert.ok(!err)
-      assert.ok(data)
-      assert.strictEqual(data.statusCode, 404)
+      function onget(err, data) {
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 404, '404s')
 
-      var body = JSON.parse(data.body)
+        var body = JSON.parse(data.body)
 
-      assert.strictEqual(body.error, 'not_found')
-      assert.strictEqual(body.reason, 'Document not found.')
+        t.strictEqual(body.error, 'not_found', 'Has correct error')
+        t.strictEqual(body.reason, 'Document not found.', 'Has correct reason')
 
-      done()
-    }
+        done()
+        t.end()
+      }
+    })
   }
 
   function get_old_version(done) {
-    var req_options = {
-        uri: url.format(config.host) + '/unpm/0.0.9'
-      , body: JSON.stringify(fixture)
-    }
+    test('GET old version works correctly', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm/0.0.9'
+        , body: JSON.stringify(fixture)
+      }
 
-    var req = request.get(req_options, onget)
+      var req = request.get(req_options, onget)
 
-    function onget(err, data) {
-      assert.ok(!err)
-      assert.ok(data)
-      assert.strictEqual(data.statusCode, 200)
+      function onget(err, data) {
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 200, '200 status code')
 
-      var body = JSON.parse(data.body)
+        var body = JSON.parse(data.body)
 
-      var expected = fixture.versions['0.0.9']
+        var expected = fixture.versions['0.0.9']
 
-      assert.deepEqual(expected, body)
-
-      done()
-    }
+        t.deepEqual(
+            expected
+          , body
+          , 'Has correct metadata for version requested'
+        )
+        t.end()
+        done()
+      }
+    })
   }
 
   function get_tarball(done) {
-    var req_options = {
-        uri: url.format(config.host) + '/unpm/-/unpm-0.0.9.tgz'
-      , body: JSON.stringify(fixture)
-    }
+    test('GET tarball does the right thing', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm/-/unpm-0.0.9.tgz'
+        , body: JSON.stringify(fixture)
+      }
 
-    var req = request.get(req_options, onget)
+      var req = request.get(req_options, onget)
 
-    function onget(err, data) {
-      assert.ok(!err)
-      assert.ok(data)
-      assert.strictEqual(data.statusCode, 200)
+      function onget(err, data) {
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 200, '200 status code')
 
-      var expected = Buffer(
-          fixture._attachments['unpm-0.0.9.tgz'].data
-        , 'base64'
-      ).toString()
+        var expected = Buffer(
+            fixture._attachments['unpm-0.0.9.tgz'].data
+          , 'base64'
+        ).toString()
 
-      assert.strictEqual(
-          data.body
-        , expected
-      )
+        t.strictEqual(
+            data.body
+          , expected
+          , 'Got correct tarball'
+        )
 
-      done()
-    }
+        t.end()
+        done()
+      }
+    })
   }
 }
