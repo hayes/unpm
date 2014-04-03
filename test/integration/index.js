@@ -1,10 +1,12 @@
 var backend = require('unpm-mem-backend')
-  , fixture = require('./fixture.json')
   , unpm = require('../../index')
   , request = require('request')
   , semver = require('semver')
   , test = require('tape')
   , url = require('url')
+  , fs = require('fs')
+
+var fixture = JSON.parse(fs.readFileSync(__dirname + '/fixture.json'))
 
 function start(unpm_service, port, on_server_listening) {
   unpm_service.server.listen(
