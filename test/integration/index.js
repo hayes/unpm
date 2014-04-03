@@ -6,6 +6,8 @@ var backend = require('unpm-mem-backend')
   , assert = require('assert')
   , url = require('url')
 
+var tarball = fixture
+
 assert.end = function() {
 
 }
@@ -41,7 +43,7 @@ function verify_default_configuration(assert) {
   config.host = {}
   config.host.hostname = 'localhost'
   config.host.protocol = 'http'
-  config.host.port = 8123
+  config.host.port = 8124
   config.host.pathname = ''
 
   config.base_pathname = ''
@@ -69,6 +71,7 @@ function verify_default_configuration(assert) {
       , get_latest
       , get_nonexistent_version
       , get_old_version
+      , get_tarball
       , end.bind(null, unpm_service)
     ]
 
@@ -128,8 +131,12 @@ function verify_default_configuration(assert) {
 
     fixture['dist-tags'].latest = new_version
 
+    fixture.versions[new_version].dist.tarball = url.format(config.host) +
+       '/unpm/-/unpm-' + new_version + '.tgz'
+
     fixture._attachments[fixture.name + '-' + new_version + '.tgz'] =
       fixture._attachments[fixture.name + '-' + latest + '.tgz']
+
 
     var req_options = {
         uri: url.format(config.host) + '/unpm'
@@ -178,10 +185,8 @@ function verify_default_configuration(assert) {
 
       assert.deepEqual(result_tarballs[0], expected_tarballs[0])
 
-      for(var v in body.versions) {
-        body.versions[v].dist.tarball = fixture.versions[v].dist.tarball
-      }
-
+      // The body has more keys than the fixture, which should be redundant
+      // with the fixture.
       for(var key in body) {
         assert.deepEqual(body[key], fixture[key])
       }
@@ -229,10 +234,34 @@ function verify_default_configuration(assert) {
 
       var expected = fixture.versions['0.0.9']
 
-      expected.dist.tarball = url.format(config.host) +
-        '/unpm/-/unpm-0.0.9.tgz'
-
       assert.deepEqual(expected, body)
+
+      done()
+    }
+  }
+
+  function get_tarball(done) {
+    var req_options = {
+        uri: url.format(config.host) + '/unpm/-/unpm-0.0.9.tgz'
+      , body: JSON.stringify(fixture)
+    }
+
+    var req = request.get(req_options, onget)
+
+    function onget(err, data) {
+      assert.ok(!err)
+      assert.ok(data)
+      assert.strictEqual(data.statusCode, 200)
+
+      var expected = Buffer(
+          fixture._attachments['unpm-0.0.9.tgz'].data
+        , 'base64'
+      ).toString()
+
+      assert.strictEqual(
+          data.body
+        , expected
+      )
 
       done()
     }
