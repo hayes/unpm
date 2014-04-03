@@ -3,14 +3,8 @@ var backend = require('unpm-mem-backend')
   , unpm = require('../../index')
   , request = require('request')
   , semver = require('semver')
-  , assert = require('assert')
+  , test = require('tape')
   , url = require('url')
-
-var tarball = fixture
-
-assert.end = function() {
-
-}
 
 function start(unpm_service, port, on_server_listening) {
   unpm_service.server.listen(
@@ -19,8 +13,7 @@ function start(unpm_service, port, on_server_listening) {
   )
 }
 
-function end(unpm_service) {
-  unpm_service.server.close()
+function end(unpm_service, assert) {
   assert.end()
 }
 
@@ -34,7 +27,7 @@ function nest(functions) {
   })
 }
 
-verify_default_configuration(assert)
+test('default configuration', verify_default_configuration)
 
 function verify_default_configuration(assert) {
   var config = {}
@@ -72,7 +65,8 @@ function verify_default_configuration(assert) {
       , get_nonexistent_version
       , get_old_version
       , get_tarball
-      , end.bind(null, unpm_service)
+      , unpm_service.server.close.bind(unpm_service.server)
+      , assert.end.bind(assert)
     ]
 
     nest(fns)
