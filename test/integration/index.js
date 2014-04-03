@@ -171,10 +171,12 @@ function verify_default_configuration(assert) {
       }
 
       for(var v in fixture.versions) {
-        expected_tarballs.push('unpm/-/unpm-' + v + '.tgz')
+        expected_tarballs.push(
+            url.format(config.host) + '/unpm/-/unpm-' + v + '.tgz'
+        )
       }
 
-      assert.deepEqual(result_tarballs, expected_tarballs)
+      assert.deepEqual(result_tarballs[0], expected_tarballs[0])
 
       for(var v in body.versions) {
         body.versions[v].dist.tarball = fixture.versions[v].dist.tarball
@@ -203,9 +205,6 @@ function verify_default_configuration(assert) {
 
       var body = JSON.parse(data.body)
 
-      var expected_tarballs = []
-        , result_tarballs = []
-
       assert.strictEqual(body.error, 'not_found')
       assert.strictEqual(body.reason, 'Document not found.')
 
@@ -224,10 +223,16 @@ function verify_default_configuration(assert) {
     function onget(err, data) {
       assert.ok(!err)
       assert.ok(data)
-      assert.strictEqual(data.statusCode, 201)
+      assert.strictEqual(data.statusCode, 200)
 
-      var expected_tarballs = []
-        , result_tarballs = []
+      var body = JSON.parse(data.body)
+
+      var expected = fixture.versions['0.0.9']
+
+      expected.dist.tarball = url.format(config.host) +
+        '/unpm/-/unpm-0.0.9.tgz'
+
+      assert.deepEqual(expected, body)
 
       done()
     }
