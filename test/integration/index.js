@@ -46,7 +46,6 @@ config.verbose = false
 config.backend = backend()
 
 test('integration', function(t) {
-  config.test = t
   verify(config, t)
 })
 
