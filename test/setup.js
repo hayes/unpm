@@ -8,18 +8,19 @@ function setup(up, down, run) {
     var test_context
 
     var test = tape(name, function(t) {
-      context.reset()
       context.run(function(new_context) {
         test_context = up ? (up(new_context) || new_context) : new_context
         fn.bind(test_context)(t)
       })
     })
 
-    if(down) {
-      test.on('end', function() {
+    test.on('end', function() {
+      context.reset()
+
+      if(down) {
         context.ns.bind(down, test_context)(test_context)
-      })
-    }
+      }
+    })
 
     if(run) {
       test.on('run', function() {
