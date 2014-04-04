@@ -4,7 +4,7 @@
   "description": "private npm registry in node",
   "main": "./index.js",
   "scripts": {
-    "test": "node ./test; node test/integration",
+    "test": "node ./test",
     "start": "node bin/server.js | bunyan",
     "coverage": "node scripts/coverage.js",
     "coveralls": "npm run coverage | ./node_modules/coveralls/bin/coveralls.js"

@@ -45,9 +45,11 @@ config.verbose = false
 
 config.backend = backend()
 
-verify(config)
+test('integration', function(t) {
+  verify(config, t)
+})
 
-function verify(config) {
+function verify(config, t) {
   var unpm_service = unpm(config)
 
   start(unpm_service, config.host.port, on_server_listening)
@@ -64,13 +66,14 @@ function verify(config) {
       , get_old_version
       , get_tarball
       , unpm_service.server.close.bind(unpm_service.server)
+      , t.end.bind(t)
     ]
 
     nest(fns)
   }
 
   function put_package(done) {
-    test('Can publish a package', function(t) {
+    t.test('Can publish a package', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
         , body: JSON.stringify(fixture)
@@ -91,7 +94,7 @@ function verify(config) {
   }
 
   function try_putting_again(done) {
-    test('putting the same package/version twice 409s', function(t) {
+    t.test('putting the same package/version twice 409s', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
         , body: JSON.stringify(fixture)
@@ -131,7 +134,7 @@ function verify(config) {
     fixture._attachments[fixture.name + '-' + new_version + '.tgz'] =
       fixture._attachments[fixture.name + '-' + latest + '.tgz']
 
-    test('Bumping version and publishing works', function(t) {
+    t.test('Bumping version and publishing works', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
         , body: JSON.stringify(fixture)
@@ -152,7 +155,7 @@ function verify(config) {
   }
 
   function get_latest(done) {
-    test('GET package returns latest metadata', function(t) {
+    t.test('GET package returns latest metadata', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
         , body: JSON.stringify(fixture)
@@ -203,7 +206,7 @@ function verify(config) {
   }
 
   function get_nonexistent_version(done) {
-    test('GET nonexistent version 404s', function(t) {
+    t.test('GET nonexistent version 404s', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm/0.0.1'
         , body: JSON.stringify(fixture)
@@ -228,7 +231,7 @@ function verify(config) {
   }
 
   function get_old_version(done) {
-    test('GET old version works correctly', function(t) {
+    t.test('GET old version works correctly', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm/0.0.9'
         , body: JSON.stringify(fixture)
@@ -257,7 +260,7 @@ function verify(config) {
   }
 
   function get_tarball(done) {
-    test('GET tarball does the right thing', function(t) {
+    t.test('GET tarball does the right thing', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm/-/unpm-0.0.9.tgz'
         , body: JSON.stringify(fixture)
