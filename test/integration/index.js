@@ -79,10 +79,11 @@ function verify(config) {
       var req = request.put(req_options, onput)
 
       function onput(err, data) {
+        t.plan(3)
+
         t.ok(!err, 'Put request does not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 201, '201s')
-        t.end()
 
         done()
       }
@@ -99,10 +100,11 @@ function verify(config) {
       var req = request.put(req_options, onput)
 
       function onput(err, data) {
+        t.plan(3)
+
         t.ok(!err, 'Request did not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 409, 'Responds with 409')
-        t.end()
         done()
       }
     })
@@ -138,11 +140,11 @@ function verify(config) {
       var req = request.put(req_options, onput)
 
       function onput(err, data) {
+        t.plan(3)
         t.ok(!err, 'No error')
         t.ok(data, 'Has data')
 
         t.strictEqual(data.statusCode, 201, 'Is a 201, for updated resource')
-        t.end()
 
         done()
       }
@@ -159,6 +161,7 @@ function verify(config) {
       var req = request.get(req_options, onget)
 
       function onget(err, data) {
+        t.plan(6)
         t.ok(!err, 'Request did not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 200, '200s')
@@ -194,7 +197,6 @@ function verify(config) {
           )
         }
 
-        t.end()
         done()
       }
     })
@@ -210,6 +212,7 @@ function verify(config) {
       var req = request.get(req_options, onget)
 
       function onget(err, data) {
+        t.plan(5)
         t.ok(!err, 'Request did not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 404, '404s')
@@ -220,7 +223,6 @@ function verify(config) {
         t.strictEqual(body.reason, 'Document not found.', 'Has correct reason')
 
         done()
-        t.end()
       }
     })
   }
@@ -235,6 +237,7 @@ function verify(config) {
       var req = request.get(req_options, onget)
 
       function onget(err, data) {
+        t.plan(4)
         t.ok(!err, 'Request did not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 200, '200 status code')
@@ -248,7 +251,6 @@ function verify(config) {
           , body
           , 'Has correct metadata for version requested'
         )
-        t.end()
         done()
       }
     })
@@ -264,6 +266,7 @@ function verify(config) {
       var req = request.get(req_options, onget)
 
       function onget(err, data) {
+        t.plan(4)
         t.ok(!err, 'Request did not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 200, '200 status code')
@@ -278,8 +281,6 @@ function verify(config) {
           , expected
           , 'Got correct tarball'
         )
-
-        t.end()
         done()
       }
     })
