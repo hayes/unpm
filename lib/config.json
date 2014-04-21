@@ -11,5 +11,6 @@
     "saltLength": 30,
     "iterations": 10
   },
-  "verbose": true
+  "verbose": true,
+  "check_auth": true
 }

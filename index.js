@@ -31,6 +31,10 @@ function unpm(ns, config) {
   self.backend = {}
   auth(self)
 
+  if(config.check_auth) {
+    self.middleware.push(auth.check_auth)
+  }
+
   Object.keys(config.backend).forEach(function(key) {
     self.backend[key] = function() {
       var args = [].slice.call(arguments)
