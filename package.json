@@ -23,7 +23,7 @@
     "unpm-router": "0.0.2",
     "continuation-local-storage": "3.0.0",
     "unpm-fs-backend": "0.0.1",
-    "unpm-auth": "0.0.5",
+    "unpm-auth": "0.0.6",
     "bunyan": "0.22.1"
   },
   "license": "MIT",
