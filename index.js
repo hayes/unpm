@@ -1,4 +1,5 @@
 var controllers = require('./lib/controllers')
+  , add_defaults = require('./lib/config')
   , handler = require('./lib/handler')
   , logging = require('./lib/logging')
   , context = require('./lib/context')
@@ -10,7 +11,7 @@ module.exports = setup
 
 function setup(config) {
   return context.ns.run(function(new_context) {
-    unpm.call(new_context, context.ns, config)
+    unpm.call(new_context, context.ns, add_defaults(config))
   })
 }
 
