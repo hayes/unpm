@@ -14,9 +14,10 @@ test('get and set meta', function(t) {
 
   t.plan(3)
 
-  Package.set_meta('unpm', data, function(err) {
+  Package.setMeta('unpm', data, function(err) {
     t.ok(!err, 'no error when setting meta')
-    Package.get_meta('unpm', got_meta)
+    console.log(err && err.message)
+    Package.getMeta('unpm', got_meta)
   })
 
   function got_meta(err, result) {
@@ -26,7 +27,7 @@ test('get and set meta', function(t) {
 })
 
 test('get and set tarball', function(t) {
-  var stream = Package.set_tarball('unpm', '1.2.3')
+  var stream = Package.setTarball('unpm', '1.2.3')
     , val = 'abc'
 
   stream.on('end', function() {
@@ -42,7 +43,7 @@ test('get and set tarball', function(t) {
   stream.end()
 
   function get_tarball() {
-    var result = Package.get_tarball('unpm', '1.2.3').pipe(concat(done))
+    var result = Package.getTarball('unpm', '1.2.3').pipe(concat(done))
 
     result.on('error', function() {
       t.ok(false, 'no error when getting tarball')

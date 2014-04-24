@@ -22,8 +22,8 @@
     "nopt": "2.2.0",
     "unpm-router": "0.0.3",
     "continuation-local-storage": "3.0.0",
-    "unpm-fs-backend": "0.0.1",
-    "unpm-auth": "0.0.6",
+    "unpm-fs-backend": "0.0.4",
+    "unpm-auth": "0.1.3",
     "bunyan": "0.22.1"
   },
   "license": "MIT",
@@ -32,8 +32,8 @@
     "blanket": "1.1.6",
     "coveralls": "2.8.0",
     "mocha-lcov-reporter": "0.0.1",
-    "unpm-mem-backend": "0.0.0",
-    "jsl": "^0.1.1"
+    "unpm-mem-backend": "0.4.0",
+    "jsl": "0.1.1"
   },
   "repository": {
     "type": "git",
