@@ -30,7 +30,7 @@ function unpm(ns, config) {
   self.router = router
   self.config = config
   self.middleware = []
-  self.backend = {}
+  self.backend = Object.create(config.backend)
   auth(self)
   cidr(self)
 
