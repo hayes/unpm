@@ -175,6 +175,11 @@ You can set the following values as configuration options:
   this option is not defined, but `config.log` is set, logs will be written
   to the current working directory.
 
+#### `config.cidr`
+
+  An array of cidr ip ranges. If this option is set, unpm will return a 403
+  to any request whos ip does not fall into the provided ip ranges.
+
 ## License
 
 [MIT](./LICENSE)

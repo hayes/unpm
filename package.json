@@ -24,7 +24,8 @@
     "continuation-local-storage": "3.0.0",
     "unpm-fs-backend": "0.0.4",
     "unpm-auth": "0.1.3",
-    "bunyan": "0.22.1"
+    "bunyan": "0.22.1",
+    "range_check": "0.0.4"
   },
   "license": "MIT",
   "devDependencies": {
