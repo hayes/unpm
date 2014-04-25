@@ -4,6 +4,7 @@ var controllers = require('./lib/controllers')
   , logging = require('./lib/logging')
   , context = require('./lib/context')
   , Router = require('unpm-router')
+  , cidr = require('./lib/cidr')
   , auth = require('unpm-auth')
   , http = require('http')
 
@@ -31,6 +32,7 @@ function unpm(ns, config) {
   self.middleware = []
   self.backend = {}
   auth(self)
+  cidr(self)
 
   if(config.check_auth) {
     self.middleware.push(auth.check_auth)
