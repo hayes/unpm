@@ -28,6 +28,7 @@ var CWD = process.cwd()
 
 var unpm_service
   , tarballs_dir
+  , store_dir
   , user_dir
   , meta_dir
   , data_dir
@@ -42,8 +43,9 @@ if(!config.backend) {
   tarballs_dir = path.join(data_dir, 'tarballs')
   user_dir = path.join(data_dir, 'users')
   meta_dir = path.join(data_dir, 'meta')
+  store_dir = path.join(data_dir, 'store')
 
-  config.backend = backend(meta_dir, user_dir, tarballs_dir)
+  config.backend = backend(meta_dir, user_dir, tarballs_dir, store_dir)
 }
 
 unpm_service = unpm(config)
