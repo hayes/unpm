@@ -17,7 +17,7 @@ function setup(config) {
 }
 
 function unpm(ns, config) {
-  var router = Router(config.base_pathname)
+  var router = Router(config.basePathname)
     , self = this
 
   handler = ns.bind(handler)
@@ -34,7 +34,7 @@ function unpm(ns, config) {
   auth(self)
   cidr(self)
 
-  if(config.check_auth) {
+  if(config.checkAuth) {
     self.middleware.push(auth.check_auth)
   }
 
