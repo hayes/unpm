@@ -150,7 +150,7 @@ You can set the following values as configuration options:
   }
   ```
 
-#### `config.base_pathname`
+#### `config.basePathname`
 
   The path prefix from which &mu;npm serves requests.
 
@@ -158,6 +158,10 @@ You can set the following values as configuration options:
 
   An object to be passed to require('[password-hash][password-hash]').generate
   as its second argument, when hashing passwords.
+
+#### `config.checkAuth`
+
+  If true, registry requests will be checked for authentication.
 
 #### `config.verbose`
 
@@ -168,7 +172,7 @@ You can set the following values as configuration options:
   If true, saves logs, otherwise no logs will be printed. Stores rotational
   file logs with a period of one day, keeping 10 days worth of archives.
 
-#### `config.log_dir`
+#### `config.logDir`
 
   The directory into which to write logs. If this option is defined, but
   `config.log` is not specifically set, logs **will** still be written. If

@@ -34,9 +34,9 @@ config.host.protocol = 'http'
 config.host.port = 8124
 config.host.pathname = ''
 
-config.check_auth = false
+config.checkAuth = false
 
-config.base_pathname = ''
+config.basePathname = ''
 
 config.crypto = {}
 config.crypto.algorithm = 'sha512'
