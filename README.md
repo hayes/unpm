@@ -59,6 +59,9 @@ npm adduser --registry http://localhost:8123
 - [clone-packages](http://npm.im/clone-packages) allows you to clone packages
 from one npm registry to another.
 
+- [unpm-www](https://github.com/jarofghosts/unpm-www) a web frontend for npm-like
+registries (like [&mu;npm](https://github.com/hayes/unpm))
+
 ### As a node module
 
 Install with `npm install unpm`. 
