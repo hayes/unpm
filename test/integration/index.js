@@ -63,10 +63,13 @@ function verify(config, t) {
         put_package
       , try_putting_again
       , bump_version_and_put
-      , get_latest
+      , get_latest.bind(null, ['1.1.1', '0.1.1'])
       , get_nonexistent_version
       , get_old_version
       , get_tarball
+      , unpublish_version
+      , get_latest.bind(null, ['1.1.1'])
+      , unpublish_all
       , unpm_service.server.close.bind(unpm_service.server)
       , t.end.bind(t)
     ]
@@ -156,7 +159,7 @@ function verify(config, t) {
     })
   }
 
-  function get_latest(done) {
+  function get_latest(versions, done) {
     t.test('GET package returns latest metadata', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
@@ -166,23 +169,30 @@ function verify(config, t) {
       var req = request.get(req_options, onget)
 
       function onget(err, data) {
-        t.plan(6)
+        t.plan(9)
         t.ok(!err, 'Request did not error')
         t.ok(data, 'Has data')
         t.strictEqual(data.statusCode, 200, '200s')
 
-        var body = JSON.parse(data.body)
+        var expected = JSON.parse(JSON.stringify(fixture))
+          , body = JSON.parse(data.body)
+
+        Object.keys(expected.versions).forEach(function(version) {
+          delete expected.versions[version].readme
+        })
+
+        delete body._rev
 
         var expected_tarballs = []
           , result_tarballs = []
 
-        for(var v in body.versions) {
-          result_tarballs.push(body.versions[v].dist.tarball)
+        for(var i = 0; i < versions.length; ++i) {
+          result_tarballs.push(body.versions[versions[i]].dist.tarball)
         }
 
-        for(var v in fixture.versions) {
+        for(var i = 0; i < versions.length; ++i) {
           expected_tarballs.push(
-              url.format(config.host) + '/unpm/-/unpm-' + v + '.tgz'
+              url.format(config.host) + '/unpm/-/unpm-' + versions[i] + '.tgz'
           )
         }
 
@@ -197,7 +207,7 @@ function verify(config, t) {
         for(var key in body) {
           t.deepEqual(
               body[key]
-            , fixture[key]
+            , expected[key]
             , 'Key ' + key + ' matches between fixture and response body'
           )
         }
@@ -235,7 +245,7 @@ function verify(config, t) {
   function get_old_version(done) {
     t.test('GET old version works correctly', function(t) {
       var req_options = {
-          uri: url.format(config.host) + '/unpm/0.0.9'
+          uri: url.format(config.host) + '/unpm/0.1.1'
         , body: JSON.stringify(fixture)
       }
 
@@ -249,7 +259,9 @@ function verify(config, t) {
 
         var body = JSON.parse(data.body)
 
-        var expected = fixture.versions['0.0.9']
+        var expected = fixture.versions['0.1.1']
+
+        delete expected.readme
 
         t.deepEqual(
             expected
@@ -264,7 +276,7 @@ function verify(config, t) {
   function get_tarball(done) {
     t.test('GET tarball does the right thing', function(t) {
       var req_options = {
-          uri: url.format(config.host) + '/unpm/-/unpm-0.0.9.tgz'
+          uri: url.format(config.host) + '/unpm/-/unpm-0.1.1.tgz'
         , body: JSON.stringify(fixture)
       }
 
@@ -277,7 +289,7 @@ function verify(config, t) {
         t.strictEqual(data.statusCode, 200, '200 status code')
 
         var expected = Buffer(
-            fixture._attachments['unpm-0.0.9.tgz'].data
+            fixture._attachments['unpm-0.1.1.tgz'].data
           , 'base64'
         ).toString()
 
@@ -287,6 +299,99 @@ function verify(config, t) {
           , 'Got correct tarball'
         )
         done()
+      }
+    })
+  }
+
+  function unpublish_version(done) {
+    t.test('remove version', function(t) {
+      delete fixture.versions['0.1.1']
+
+      var req_options = {
+          uri: url.format(config.host) + '/unpm/-rev/2'
+        , body: JSON.stringify(fixture)
+      }
+
+      var req = request.put(req_options, on_response)
+
+      function on_response(err, data) {
+        t.plan(6)
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 200, '200 status code')
+
+        try_tarball()
+      }
+
+      function try_tarball() {
+        var req_options = {
+            uri: url.format(config.host) + '/unpm/-/unpm-0.1.1.tgz'
+          , body: JSON.stringify(fixture)
+        }
+
+        var req = request.get(req_options, on_response)
+
+        function on_response(err, data) {
+          t.ok(!err, 'Request did not error')
+          t.ok(data, 'Has data')
+          t.strictEqual(data.statusCode, 404, '404 status code')
+
+          done()
+        }
+      }
+    })
+  }
+
+  function unpublish_all(done) {
+    t.test('remove version', function(t) {
+      var req_options = {
+          uri: url.format(config.host) + '/unpm/-rev/2'
+        , body: JSON.stringify(fixture)
+      }
+
+      var req = request.del(req_options, on_response)
+
+      function on_response(err, data) {
+        t.plan(9)
+        t.ok(!err, 'Request did not error')
+        t.ok(data, 'Has data')
+        t.strictEqual(data.statusCode, 200, '200 status code')
+
+        try_tarball()
+      }
+
+      function try_tarball() {
+        var req_options = {
+            uri: url.format(config.host) + '/unpm/-/unpm-1.1.1.tgz'
+          , body: JSON.stringify(fixture)
+        }
+
+        var req = request.get(req_options, on_response)
+
+        function on_response(err, data) {
+          t.ok(!err, 'Request did not error')
+          t.ok(data, 'Has data')
+          t.strictEqual(data.statusCode, 404, '404 status code')
+
+          try_index()
+        }
+      }
+
+      function try_index() {
+        var req_options = {
+            uri: url.format(config.host) + '/unpm'
+          , body: JSON.stringify(fixture)
+        }
+
+        var req = request.get(req_options, on_response)
+
+        function on_response(err, data) {
+          t.ok(!err, 'Request did not error')
+          t.ok(data, 'Has data')
+          t.strictEqual(data.statusCode, 404, '404 status code')
+
+          done()
+        }
       }
     })
   }

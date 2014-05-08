@@ -1,6 +1,6 @@
 {
   "name": "unpm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "private npm registry in node",
   "main": "./index.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "blanket": "1.1.6",
     "coveralls": "2.8.0",
     "mocha-lcov-reporter": "0.0.1",
-    "unpm-mem-backend": "0.4.0",
+    "unpm-mem-backend": "0.4.1",
     "jsl": "0.1.1"
   },
   "repository": {
