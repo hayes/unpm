@@ -64,6 +64,8 @@ registries (like [&mu;npm](https://github.com/hayes/unpm))
 
 - [unpm-dependents](https://github.com/jarofghosts/unpm-dependents) middleware providing dependedUpon for μnpm
 
+- [unpm-meta-cache](https://github.com/hayes/unpm-meta-cache) caches a blob of meta data for all modules in the registry
+
 ### As a node module
 
 Install with `npm install unpm`. 
