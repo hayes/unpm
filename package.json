@@ -1,6 +1,6 @@
 {
   "name": "unpm",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "private npm registry in node",
   "main": "./index.js",
   "scripts": {
