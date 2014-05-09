@@ -62,6 +62,8 @@ from one npm registry to another.
 - [unpm-www](https://github.com/jarofghosts/unpm-www) a web frontend for npm-like
 registries (like [&mu;npm](https://github.com/hayes/unpm))
 
+- [unpm-dependents](https://github.com/jarofghosts/unpm-dependents) middleware providing dependedUpon for μnpm
+
 ### As a node module
 
 Install with `npm install unpm`. 
