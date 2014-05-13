@@ -12,5 +12,5 @@
     "iterations": 10
   },
   "verbose": true,
-  "check_auth": true
+  "checkAuth": true
 }
