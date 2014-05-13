@@ -35,7 +35,7 @@ function unpm(ns, config) {
   cidr(self)
 
   if(config.checkAuth) {
-    self.middleware.push(auth.check_auth)
+    self.middleware.push(auth.check_auth.bind(null, config))
   }
 
   Object.keys(config.backend).forEach(function(key) {

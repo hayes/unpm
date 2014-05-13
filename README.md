@@ -13,7 +13,7 @@ Your own private npm
 If you just want a &mu;npm with the default configuration:
 
 `
-npm install -g unpm && unpm 
+npm install -g unpm && unpm
 `
 
 Now you have your own npm running at `localhost:8123`.
@@ -36,7 +36,7 @@ The default command line tool accepts the following flags:
 
 Now use `npm` as normal-- simply specify the URI of the running &mu;npm service
 via the `--registry` flag, or with the `registry` parameter of your `.npmrc`.
-Most of [npm's methods](https://www.npmjs.org/doc/) are supported. 
+Most of [npm's methods](https://www.npmjs.org/doc/) are supported.
 
 Usage might look something like the following:
 
@@ -68,7 +68,7 @@ registries (like [&mu;npm](https://github.com/hayes/unpm))
 
 ### As a node module
 
-Install with `npm install unpm`. 
+Install with `npm install unpm`.
 
 Now `require('unpm')` returns a function which takes a `config` object, and
 constructs a &mu;npm service, with attributes as defined in [Instance](#instance).
@@ -82,7 +82,7 @@ The `config` object can have all the keys defined in
 - `config.sessions`: An object with methods:
   - `set(data, done)`, where `done` is a node style callback. If successful,
     `done` will be called with a token which can be used to retrieve `data` via
-    the `get` method. 
+    the `get` method.
   - `get(token, done)`, where `done` is a node style callback. If successful,
     `done` will be called with the data correspondinging to the token.
 
@@ -125,7 +125,7 @@ You can set the following values as configuration options:
   Describes a base URI at which &mu;npm's resources will be made
   available, modulo package name. The URI (with package name) is written to
   each package's metadata. At current this simply sets the URI (modulo name and
-  version) at which package tarballs are available. 
+  version) at which package tarballs are available.
 
   Note: that this may or may not reflect the URI at which &mu;npm's resources
   will be made available.  The intent is to allow &mu;npm to sit behind a proxy,
@@ -149,10 +149,10 @@ You can set the following values as configuration options:
 
   ```javascript
   var url = require('url') // node's url lib
-  
+
   function make_filename(name, version) {
     var filename = name + '-' + version + '.tgz'
-    
+
     return url.format(config.host) + path.join('/', name, '-','filename')
   }
   ```
@@ -169,6 +169,22 @@ You can set the following values as configuration options:
 #### `config.checkAuth`
 
   If true, registry requests will be checked for authentication.
+
+#### `config.auth`
+
+  Settings that come in effect when config.checkAuth is true
+
+  Defaults to:
+
+  ```json
+  {
+    "authenticated_gets": false,
+    "whitelist": ["/_session", "/-/user/org.couchdb.user:*"]
+  }
+  ```
+  `authenticated_gets` if true, get requests must also be authenticated. Used to prevent anonymous installs of packages.
+  `whitelist` an array of routes that are whitelisted for unauthenticated users.
+
 
 #### `config.verbose`
 
