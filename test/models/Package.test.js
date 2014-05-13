@@ -16,7 +16,6 @@ test('get and set meta', function(t) {
 
   Package.setMeta('unpm', data, function(err) {
     t.ok(!err, 'no error when setting meta')
-    console.log(err && err.message)
     Package.getMeta('unpm', got_meta)
   })
 

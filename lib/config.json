@@ -5,7 +5,7 @@
     "port": 8123,
     "pathname": ""
   },
-  "base_pathname": "",
+  "basePathname": "",
   "crypto": {
     "algorithm": "sha512",
     "saltLength": 30,
