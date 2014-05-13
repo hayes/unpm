@@ -12,5 +12,9 @@
     "iterations": 10
   },
   "verbose": true,
-  "checkAuth": true
+  "checkAuth": true,
+  "auth" : {
+    "authenticated_gets": false,
+    "whitelist": ["/_session", "/-/user/org.couchdb.user:*"]
+  }
 }
