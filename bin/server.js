@@ -12,6 +12,7 @@ var noptions = {
   , 'log': Boolean
   , 'logdir': String
   , 'datadir': String
+  , 'fallback': String
 }
 
 var shorts = {
@@ -20,6 +21,7 @@ var shorts = {
   , 'l': ['--log']
   , 'L': ['--logdir']
   , 'd': ['--datadir']
+  , 'F': ['--fallback']
 }
 
 var config = nopt(noptions, shorts)
