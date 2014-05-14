@@ -207,6 +207,11 @@ You can set the following values as configuration options:
   An array of cidr ip ranges. If this option is set, unpm will return a 403
   to any request whos ip does not fall into the provided ip ranges.
 
+### `config.fallback`
+
+  If set, gets for package meta will be redirected to the fallback registry
+  eg. `http://registry.npmjs.org`  defaults to `false`
+
 ## License
 
 [MIT](./LICENSE)
