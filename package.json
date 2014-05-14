@@ -17,10 +17,9 @@
     "concat-stream": "1.4.1",
     "mkdirp": "0.3.5",
     "password-hash": "1.2.1",
-    "request": "2.33.0",
     "semver": "2.2.1",
     "nopt": "2.2.0",
-    "unpm-router": "0.0.3",
+    "unpm-router": "0.0.4",
     "continuation-local-storage": "3.0.0",
     "unpm-fs-backend": "0.0.7",
     "unpm-auth": "0.1.3",
@@ -34,7 +33,8 @@
     "coveralls": "2.8.0",
     "mocha-lcov-reporter": "0.0.1",
     "unpm-mem-backend": "0.4.1",
-    "jsl": "0.1.1"
+    "jsl": "0.1.1",
+    "request": "^2.34.0"
   },
   "repository": {
     "type": "git",

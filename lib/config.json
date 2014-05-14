@@ -16,5 +16,6 @@
   "auth" : {
     "authenticated_gets": false,
     "whitelist": ["/_session", "/-/user/org.couchdb.user:*"]
-  }
+  },
+  "fallback": false
 }
