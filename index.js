@@ -31,6 +31,7 @@ function unpm(ns, config) {
   self.config = config
   self.middleware = []
   self.backend = Object.create(config.backend)
+  self.dir = __dirname
   auth(self)
   cidr(self)
 
