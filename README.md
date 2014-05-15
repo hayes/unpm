@@ -66,6 +66,8 @@ registries (like [&mu;npm](https://github.com/hayes/unpm))
 
 - [unpm-meta-cache](https://github.com/hayes/unpm-meta-cache) caches a blob of meta data for all modules in the registry
 
+- [unpm-ldap](https://github.com/hayes/unpm-ldap) experimental ldap auth for unpm
+
 ### As a node module
 
 Install with `npm install unpm`.
