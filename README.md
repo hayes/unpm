@@ -66,6 +66,8 @@ registries (like [&mu;npm](https://github.com/hayes/unpm))
 
 - [unpm-meta-cache](https://github.com/hayes/unpm-meta-cache) caches a blob of meta data for all modules in the registry
 
+- [unpm-ldap](https://github.com/hayes/unpm-ldap) experimental ldap auth for unpm
+
 ### As a node module
 
 Install with `npm install unpm`.
@@ -207,7 +209,7 @@ You can set the following values as configuration options:
   An array of cidr ip ranges. If this option is set, unpm will return a 403
   to any request whos ip does not fall into the provided ip ranges.
 
-### `config.fallback`
+#### `config.fallback`
 
   If set, gets for package meta will be redirected to the fallback registry
   eg. `http://registry.npmjs.org`  defaults to `false`
