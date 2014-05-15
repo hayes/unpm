@@ -22,7 +22,7 @@
     "unpm-router": "0.0.4",
     "continuation-local-storage": "3.0.0",
     "unpm-fs-backend": "0.0.7",
-    "unpm-auth": "0.2.1",
+    "unpm-auth": "0.2.2",
     "bunyan": "0.22.1",
     "range_check": "0.0.4"
   },
