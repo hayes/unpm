@@ -8,8 +8,8 @@ var load_config = require('../lib/config')
 
 var noptions = {
     'port': Number
-  , 'verbose': Boolean
-  , 'log': Boolean
+  , 'quiet': Boolean
+  , 'log': String
   , 'logdir': String
   , 'datadir': String
   , 'fallback': String
@@ -17,7 +17,7 @@ var noptions = {
 
 var shorts = {
     'p': ['--port']
-  , 'v': ['--verbose']
+  , 'q': ['--quiet']
   , 'l': ['--log']
   , 'L': ['--logdir']
   , 'd': ['--datadir']
@@ -25,6 +25,14 @@ var shorts = {
 }
 
 var config = nopt(noptions, shorts)
+
+if(config.logdir) {
+  config.logDir = config.logdir
+}
+
+if(config.quiet) {
+  config.verbose = false
+}
 
 var CWD = process.cwd()
 
