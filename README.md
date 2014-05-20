@@ -66,6 +66,8 @@ registries (like [&mu;npm](https://github.com/hayes/unpm))
 
 - [unpm-meta-cache](https://github.com/hayes/unpm-meta-cache) caches a blob of meta data for all modules in the registry
 
+- [unpm-ldap](https://github.com/hayes/unpm-ldap) experimental ldap auth for unpm
+
 ### As a node module
 
 Install with `npm install unpm`.
@@ -79,21 +81,11 @@ The `config` object can have all the keys defined in
 - `config.backend`: Specifies the persistence layer for &mu;npm. See the default
   [file-system backend][fs-back] or the alternative [levelDB
   backend][leveldb-back]
-- `config.sessions`: An object with methods:
-  - `set(data, done)`, where `done` is a node style callback. If successful,
-    `done` will be called with a token which can be used to retrieve `data` via
-    the `get` method.
-  - `get(token, done)`, where `done` is a node style callback. If successful,
-    `done` will be called with the data correspondinging to the token.
-
-  By default, `config.sessions` defaults to a simple, in-memory
-  [store](./lib/models/SessionStore.js).
 
 #### Instance
 
 The &mu;npm service instance has the following attributes:
 
-- `sessions`: The `config.sessions` object.
 - `server`: An [HTTP
   server](http://nodejs.org/api/http.html#http_class_http_server) instance
   which will service the npm api, and the additional resources defined for

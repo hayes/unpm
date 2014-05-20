@@ -70,11 +70,15 @@ function verify(config, t) {
       , unpublish_version
       , get_latest.bind(null, ['1.1.1'])
       , unpublish_all
-      , unpm_service.server.close.bind(unpm_service.server)
-      , t.end.bind(t)
+      , end
     ]
 
     nest(fns)
+  }
+
+  function end() {
+    unpm_service.server.close()
+    t.end()
   }
 
   function put_package(done) {
