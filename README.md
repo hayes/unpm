@@ -26,8 +26,8 @@ Now you have your own npm running at `localhost:8123`.
 The default command line tool accepts the following flags:
 
 - `--port, -p <number>`: Run &mu;npm's http server on port `<number>`
-- `--verbose, -v`: Enable logging to stdout
-- `--log, -l`: Store logs on the file system
+- `--quiet, -q`: Disable logging to stdout
+- `--log, -l`: Set log level (`error`, `info`, or `debug`; defaults to `info`)
 - `--logdir, -L`: Path for log storage, defaults to `$(pwd)`
 - `--datadir, -d`: Path for storing tarballs and data files, defaults to
 `$(pwd)/data`
@@ -98,9 +98,9 @@ The &mu;npm service instance has the following attributes:
   server](http://nodejs.org/api/http.html#http_class_http_server) instance
   which will service the npm api, and the additional resources defined for
   &mu;npm.
-- `log`: The logging object. Has methods `info` and `error`, which should
-  support the [Bunyan logging
-  API](https://github.com/trentm/node-bunyan#log-method-api).
+- `log`: The logging object. Has methods `info`, `debug`, and `error`, which
+  should support the
+  [Bunyan logging API](https://github.com/trentm/node-bunyan#log-method-api).
 - `backend`: The &mu;npm backend. This is a module which encapsulates
   persistence logic for &mu;npm. It defaults to a
   [file-system backend][fs-back], but is of course configurable.
@@ -188,29 +188,29 @@ You can set the following values as configuration options:
 
 #### `config.verbose`
 
-  If true, causes log level info to be printed to standard out.
+  Print logs to standard out. Defaults to `true`
 
 #### `config.log`
 
-  If true, saves logs, otherwise no logs will be printed. Stores rotational
-  file logs with a period of one day, keeping 10 days worth of archives.
+  A string specifying the logging level. One of: "error", "info", or "debug".
+  Defaults to "info".
 
 #### `config.logDir`
 
-  The directory into which to write logs. If this option is defined, but
-  `config.log` is not specifically set, logs **will** still be written. If
-  this option is not defined, but `config.log` is set, logs will be written
-  to the current working directory.
+  The directory into which to write logs. Stores rotational file logs with a
+  period of one day, keeping 10 days worth of archives. If `config.log` is
+  specified but `config.verbose` is `false` and no `config.logDir` is set,
+  logs will be stored in `$(pwd)`
 
 #### `config.cidr`
 
-  An array of cidr ip ranges. If this option is set, unpm will return a 403
-  to any request whos ip does not fall into the provided ip ranges.
+  An array of CIDR IP ranges. If this option is set, unpm will return a 403
+  to any request from an IP which does not fall into the provided ranges.
 
 #### `config.fallback`
 
-  If set, gets for package meta will be redirected to the fallback registry
-  eg. `http://registry.npmjs.org`  defaults to `false`
+  If set, `GET`s for package metadata will be redirected to the fallback
+  registry specified, eg. `http://registry.npmjs.org`. Defaults to `false`
 
 ## License
 
