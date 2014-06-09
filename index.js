@@ -51,7 +51,7 @@ function unpm(ns, config) {
   })
 
   router.add('PUT', '/:name', controllers.publish)
-  router.add('GET', '/:name/-/*-*.tgz', controllers.get_tarball)
+  router.add('GET', '/:name/-/:name/:version.tgz', controllers.get_tarball)
   router.add('GET', '/:name/:version?', controllers.get_package)
   router.add('PUT', '/:name/-rev/:rev?', controllers.unpublish.some)
   router.add('DELETE', '/:name/-rev/:rev?', controllers.unpublish.all)
