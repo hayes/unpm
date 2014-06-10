@@ -181,10 +181,6 @@ function verify(config, t) {
         var expected = JSON.parse(JSON.stringify(fixture))
           , body = JSON.parse(data.body)
 
-        Object.keys(expected.versions).forEach(function(version) {
-          delete expected.versions[version].readme
-        })
-
         delete body._rev
 
         var expected_tarballs = []
@@ -264,8 +260,6 @@ function verify(config, t) {
         var body = JSON.parse(data.body)
 
         var expected = fixture.versions['0.1.1']
-
-        delete expected.readme
 
         t.deepEqual(
             expected
