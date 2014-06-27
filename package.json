@@ -14,18 +14,18 @@
   },
   "author": "Michael Hayes",
   "dependencies": {
-    "concat-stream": "1.4.1",
-    "mkdirp": "0.3.5",
-    "password-hash": "1.2.1",
-    "semver": "2.2.1",
-    "nopt": "2.2.0",
-    "unpm-router": "0.0.4",
-    "continuation-local-storage": "3.0.0",
-    "unpm-fs-backend": "0.0.7",
-    "unpm-auth": "0.2.3",
     "bunyan": "0.22.1",
+    "concat-stream": "1.4.1",
+    "continuation-local-storage": "3.0.0",
+    "mkdirp": "0.3.5",
+    "nopt": "2.2.0",
+    "password-hash": "1.2.1",
     "range_check": "0.0.4",
-    "request": "^2.34.0"
+    "request": "^2.34.0",
+    "semver": "2.2.1",
+    "unpm-auth": "^0.2.5",
+    "unpm-fs-backend": "0.0.7",
+    "unpm-router": "0.0.4"
   },
   "license": "MIT",
   "devDependencies": {
