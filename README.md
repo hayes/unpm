@@ -31,6 +31,8 @@ The default command line tool accepts the following flags:
 - `--logdir, -L`: Path for log storage, defaults to `$(pwd)`
 - `--datadir, -d`: Path for storing tarballs and data files, defaults to
 `$(pwd)/data`
+- `--fallback, -F`: Fallback npm repository
+- `--configfile, -c`: Path for loading a config file, defaults to `lib/config.json`
 
 #### Extended usage
 
