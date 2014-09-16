@@ -173,7 +173,7 @@ You can set the following values as configuration options:
   ```json
   {
     "authenticated_gets": false,
-    "whitelist": ["/_session", "/-/user/org.couchdb.user:*"]
+    "whitelist": ["/_session", "/-/user/org.couchdb.user:*", "/-/user/org.couchdb.user:*/*/*'"]
   }
   ```
   `authenticated_gets` if true, get requests must also be authenticated. Used to prevent anonymous installs of packages.
