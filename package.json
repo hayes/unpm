@@ -24,7 +24,7 @@
     "request": "^2.34.0",
     "semver": "2.2.1",
     "unpm-auth": "^0.2.5",
-    "unpm-fs-backend": "0.0.7",
+    "unpm-fs-backend": "^0.1.0",
     "unpm-router": "0.0.4"
   },
   "license": "MIT",
