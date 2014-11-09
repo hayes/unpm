@@ -1,58 +1,47 @@
-var setup = require('../lib/cidr')
-  , test = require('tape')
+var unpm = require('../index')
+var test = require('tape')
 
 var req = {}
 
 req.connection = {
-    remoteAddress: '127.0.0.1'
+  remoteAddress: '127.0.0.1'
 }
 
 test('adds middleware', function(t) {
-  var unpm = {config: {}, middleware: []}
+  var config = {}
+  var instance = unpm(config)
 
   t.plan(2)
-  setup(unpm)
-  t.ok(!unpm.middleware.length)
 
-  unpm.config.cidr = ['127.0.0.0/8']
-  setup(unpm)
-  t.ok(unpm.middleware.length, 1)
+  t.ok(!instance.middleware.length)
+
+  config.cidr = ['127.0.0.0/8']
+  instance = unpm(config)
+  t.ok(instance.middleware.length, 1)
 })
 
 test('allows valid ips', function(t) {
-  var unpm = {middleware: []}
-    , check
-
-  unpm.config = {
-      cidr: ['127.0.0.0/8']
-  }
+  var instance = unpm({
+    cidr: ['127.0.0.0/8']
+  })
+  var check = instance.middleware[0]
 
   t.plan(1)
-  setup(unpm)
-  check = unpm.middleware[0]
-
-  check({req: req}, function() {
+  check({req: req}, null, instance, function() {
     t.ok(true)
   })
 })
 
 test('blocks invalid ips', function(t) {
-  var unpm = {middleware: []}
-    , res = {}
-    , check
-
-  res.writeHead = write
-  res.end = end
-
-  unpm.config = {
-      cidr: ['10.0.0.0/8']
-  }
+  var res = {writeHead: write, end: end}
+  var instance = unpm({
+    cidr: ['10.0.0.0/8']
+  })
+  var check = instance.middleware[0]
 
   t.plan(3)
-  setup(unpm)
-  check = unpm.middleware[0]
 
-  check({req: req, res: res}, function() {
+  check({req: req, res: res}, null, instance, function() {
     t.ok(false)
   })
 
@@ -73,18 +62,14 @@ test('blocks invalid ips', function(t) {
 })
 
 test('allows if any range matches', function(t) {
-  var unpm = {middleware: []}
-    , check
-
-  unpm.config = {
-      cidr: ['10.0.0.0/8', '127.0.0.0/8']
-  }
+  var instance = unpm({
+    cidr: ['10.0.0.0/8', '127.0.0.0/8']
+  })
+  var check = instance.middleware[0]
 
   t.plan(1)
-  setup(unpm)
-  check = unpm.middleware[0]
 
-  check({req: req}, function() {
+  check({req: req}, null, instance, function() {
     t.ok(true)
   })
 })

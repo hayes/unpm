@@ -1,18 +1,15 @@
 var backend = require('unpm-mem-backend')
-  , unpm = require('../../index')
-  , request = require('request')
-  , semver = require('semver')
-  , test = require('tape')
-  , url = require('url')
-  , fs = require('fs')
+var unpm = require('../../index')
+var request = require('request')
+var semver = require('semver')
+var test = require('tape')
+var url = require('url')
+var fs = require('fs')
 
 var fixture = JSON.parse(fs.readFileSync(__dirname + '/fixture.json'))
 
-function start(unpm_service, port, on_server_listening) {
-  unpm_service.server.listen(
-      port
-    , on_server_listening.bind(unpm_service)
-  )
+function start(unpmService, port, ready) {
+  unpmService.server.listen(port, ready.bind(unpmService))
 }
 
 function nest(functions) {
@@ -26,7 +23,7 @@ function nest(functions) {
 }
 
 var config = {}
-  , unpm_service
+  , unpmService
 
 config.host = {}
 config.host.hostname = 'localhost'
@@ -52,36 +49,36 @@ test('integration', function(t) {
 })
 
 function verify(config, t) {
-  var unpm_service = unpm(config)
+  var unpmService = unpm(config)
 
-  start(unpm_service, config.host.port, on_server_listening)
+  start(unpmService, config.host.port, started)
 
-  function on_server_listening() {
+  function started(err) {
     // Put a package in unpm, then get it and make sure it's what we put in
     // there in the first place.
     var fns = [
-        put_package
-      , try_putting_again
-      , bump_version_and_put
-      , get_latest.bind(null, ['1.1.1', '0.1.1'])
-      , get_nonexistent_version
-      , get_old_version
-      , get_tarball
-      , unpublish_version
-      , get_latest.bind(null, ['1.1.1'])
-      , unpublish_all
-      , end
+      putPackage,
+      tryPuttingAgain,
+      bumpVersionAndPut,
+      get_latest.bind(null, ['1.1.1', '0.1.1']),
+      get_nonexistent_version,
+      get_old_version,
+      get_tarball,
+      unpublish_version,
+      get_latest.bind(null, ['1.1.1']),
+      unpublish_all,
+      end
     ]
 
     nest(fns)
   }
 
   function end() {
-    unpm_service.server.close()
+    unpmService.server.close()
     t.end()
   }
 
-  function put_package(done) {
+  function putPackage(done) {
     t.test('Can publish a package', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
@@ -102,7 +99,7 @@ function verify(config, t) {
     })
   }
 
-  function try_putting_again(done) {
+  function tryPuttingAgain(done) {
     t.test('putting the same package/version twice 409s', function(t) {
       var req_options = {
           uri: url.format(config.host) + '/unpm'
@@ -122,7 +119,7 @@ function verify(config, t) {
     })
   }
 
-  function bump_version_and_put(done) {
+  function bumpVersionAndPut(done) {
     var latest = Object.keys(fixture.versions).sort(semver.lt)[0]
 
     var new_version = latest.split('.')
@@ -234,7 +231,7 @@ function verify(config, t) {
 
         var body = JSON.parse(data.body)
 
-        t.strictEqual(body.error, 'not_found', 'Has correct error')
+        t.strictEqual(body.error, 'notFound', 'Has correct error')
         t.strictEqual(body.reason, 'Document not found.', 'Has correct reason')
 
         done()

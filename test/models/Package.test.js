@@ -1,11 +1,7 @@
-var Package = require('../../lib/models/Package')
-  , backend = require('unpm-mem-backend')
-  , concat = require('concat-stream')
-  , setup = require('../setup')
-
-var test = setup(function(context) {
-  context.backend = backend()
-})
+var backend = require('unpm-mem-backend')
+var Package = require('../../lib/models/Package')({backend: backend()})
+var concat = require('concat-stream')
+var test = require('tape')
 
 test('get and set meta', function(t) {
   var data = {

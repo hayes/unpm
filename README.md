@@ -8,6 +8,9 @@ Your own private npm
 
 ## Installation and Usage
 
+**Note**: its recommended to use the lastest version of `npm` with &mu;npm. It has
+been updated to support [scoped-modules] which &mu;npm also supports.
+
 ### Command line
 
 If you just want a &mu;npm with the default configuration:
@@ -213,3 +216,4 @@ You can set the following values as configuration options:
 [fs-back]: https://github.com/jarofghosts/unpm-fs-backend
 [leveldb-back]: https://github.com/hayes/unpm-leveldb
 [password-hash]: https://www.npmjs.org/package/password-hash
+[scoped-modules]: https://docs.npmjs.com/enterprise/using-it

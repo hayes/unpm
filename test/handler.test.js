@@ -1,127 +1,121 @@
-var get_context = require('../lib/context')
-  , handler = require('../lib/handler')
-  , log = require('../lib/logging')({})
-  , concat = require('concat-stream')
-  , Router = require('unpm-router')
-  , setup = require('./setup')
-  , http = require('http')
+var handler = require('../lib/handler')
+var log = require('../lib/logging')({})
+var concat = require('concat-stream')
+var Router = require('unpm-router')
+var http = require('http')
+var test = require('tape')
 
-var test = setup(before, after, start)
-
-var route_options = {
-    port: 8910
-  , method: 'GET'
-  , path: '/test/path'
-  , host: 'localhost'
+var routeOptions = {
+  port: 8910,
+  method: 'GET',
+  path: '/test/path',
+  host: 'localhost'
 }
 
-function before(context) {
-  context.log = log
-  context.router = Router()
-}
+test('req and resp saved', reqAndRespSaved)
+test('not found and 500 works', errorsWorkAsExpected)
+test('handler calls middleware', testMiddleware)
 
-function start(context) {
-  context.server = http.createServer(handler)
-  context.server.listen(8910)
-}
-
-function after(context) {
-  context.server.close()
-}
-
-test('req and resp saved', req_and_resp_saved)
-test('not found and 500 works', errors_work_as_expected)
-test('handler calls middleware', test_middleware)
-
-function req_and_resp_saved(t) {
-  var context = get_context()
-    , router = context.router
-
+function reqAndRespSaved(t) {
   t.plan(5)
+  var server = setupWith(handler, null, function() {
+    var req = http.request(routeOptions, function(req) {
+      req.pipe(concat(check))
 
-  router.add('GET', route_options.path, arbitrary_handler)
-
-  function arbitrary_handler(ctx, route, respond) {
-    var context = get_context()
-
-    t.equal(ctx.req, context.req)
-    t.equal(ctx.res, context.res)
-    t.equal(route, context.route)
-    t.equal(route.route, route_options.path)
-
-    respond(null, 200, {arbitrary: 'data'})
-  }
-
-  var req = http.request(route_options, function(req) {
-    req.pipe(concat(check_response))
-
-    function check_response(data) {
-      t.equal(data.toString(), '{"arbitrary":"data"}')
-      t.end()
-    }
-  })
-
-  req.write('hi')
-  req.end()
-}
-
-function errors_work_as_expected(t) {
-  var context = get_context()
-    , router = context.router
-
-  t.plan(2)
-
-  var req = http.request(route_options, function(res) {
-    t.strictEqual(res.statusCode, 404)
-    next_request()
-  })
-
-  req.write('hi')
-  req.end()
-
-  function next_request() {
-    router.add('GET', route_options.path, handler_500)
-
-    var req = http.request(route_options, function(res) {
-      t.strictEqual(res.statusCode, 500)
-      t.end()
+      function check(data) {
+        t.equal(data.toString(), '{"arbitrary":"data"}')
+        server.close(function() {
+          t.end()
+        })
+      }
     })
 
     req.write('hi')
     req.end()
+  })
+
+  function handler(respond, route, unpm) {
+    t.ok(respond.req)
+    t.ok(respond.res)
+    t.equal(route, respond.route)
+    t.equal(route.route, routeOptions.path)
+
+    respond(null, 200, {arbitrary: 'data'})
+  }
+}
+
+function errorsWorkAsExpected(t) {
+  t.plan(2)
+
+  var server = setupWith(null, null, function() {
+    var req = http.request(routeOptions, function(res) {
+      t.strictEqual(res.statusCode, 404)
+      server.close(nextRequest)
+    })
+
+    req.write('hi')
+    req.end()
+  })
+
+  function nextRequest() {
+    var server = setupWith(handler, null, function() {
+      var req = http.request(routeOptions, function(res) {
+        t.strictEqual(res.statusCode, 500)
+        server.close(function() {
+          t.end()
+        })
+      })
+
+      req.write('hi')
+      req.end()
+    })
   }
 
-  function handler_500(context, route, respond) {
+  function handler(respond) {
     respond(new Error('woo!'))
   }
 }
 
-function test_middleware(t) {
-  var context = get_context()
-    , router = context.router
-    , special = {}
+function testMiddleware(t) {
+  var special = {}
 
   t.plan(2)
+  var server = setupWith(handler, [addSpecial], function() {
+    var req = http.request(routeOptions, function(res) {
+      t.equal(res.statusCode, 200)
+      server.close(function() {
+        t.end()
+      })
+    })
 
-  context.middleware = [add_special]
+    req.write('hi')
+    req.end()
+  })
 
-  router.add('GET', route_options.path, arbitrary_handler)
-
-  function arbitrary_handler(context, route, respond) {
-    t.strictEqual(special, get_context().special)
+  function handler(respond, route, unpm) {
+    t.strictEqual(special, unpm.special)
     respond(null, 200, {arbitrary: 'data'})
   }
 
-  function add_special(context, done) {
-    context.special = special
+  function addSpecial(respond, route, unpm, done) {
+    unpm.special = special
     done()
   }
+}
 
-  var req = http.request(route_options, function(res) {
-    t.equal(res.statusCode, 200)
-    t.end()
-  })
+function setupWith(fn, middleware, done) {
+  var router = Router()
 
-  req.write('hi')
-  req.end()
+  if(fn) {
+    router.add('GET', routeOptions.path, fn)
+  }
+
+  server = http.createServer(handler({
+    log: log,
+    router: router,
+    middleware: middleware
+  }))
+
+  server.listen(8910, done)
+  return server
 }
