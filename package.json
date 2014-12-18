@@ -21,7 +21,7 @@
     "range_check": "0.0.4",
     "request": "^2.34.0",
     "semver": "^2.3.2",
-    "unpm-auth": "^1.0.0",
+    "unpm-auth": "^1.0.1",
     "unpm-fs-backend": "^0.1.0",
     "unpm-router": "0.0.4"
   },

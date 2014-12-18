@@ -14,8 +14,7 @@
   "verbose": true,
   "checkAuth": true,
   "auth" : {
-    "authenticatedGets": false,
-    "whitelist": []
+    "authenticatedGets": false
   },
   "fallback": null
 }
