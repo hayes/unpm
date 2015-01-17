@@ -71,7 +71,7 @@ registries (like [&mu;npm](https://github.com/hayes/unpm))
 
 - [unpm-meta-cache](https://github.com/hayes/unpm-meta-cache) caches a blob of meta data for all modules in the registry
 
-- [unpm-ldap](https://github.com/hayes/unpm-ldap) experimental ldap auth for unpm
+- [unpm-ldap](https://github.com/hayes/unpm-ldap) experimental ldap auth for &mu;npm
 
 ### As a node module
 
@@ -128,7 +128,7 @@ You can set the following values as configuration options:
   will be made available.  The intent is to allow &mu;npm to sit behind a proxy,
   writing its data to a location from which they might be served by a light,
   fast static asset server. The proxy can route requests to host to the static
-  server, and requests to `unpm`.
+  server, and requests to `&mu;npm`.
 
   Defaults to:
 
@@ -201,13 +201,18 @@ You can set the following values as configuration options:
 
 #### `config.cidr`
 
-  An array of CIDR IP ranges. If this option is set, unpm will return a 403
+  An array of CIDR IP ranges. If this option is set, &mu;npm will return a 403
   to any request from an IP which does not fall into the provided ranges.
 
 #### `config.fallback`
 
   If set, `GET`s for package metadata will be redirected to the fallback
   registry specified, eg. `http://registry.npmjs.org`. Defaults to `false`
+
+#### `config.alwaysIncludeFallback`
+  If set to `true`, looking up packages against &mu;npm will always include
+  versions published to the fallback as well, rather than just showing versions
+  in the fallback if no version exists in &mu;npm. Defaults to `false`.
 
 ## License
 

@@ -16,5 +16,6 @@
   "auth" : {
     "authenticatedGets": false
   },
-  "fallback": null
+  "fallback": null,
+  "alwaysIncludeFallback": false
 }
