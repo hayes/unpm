@@ -16,6 +16,7 @@ function unpm(config, User, backend) {
     return new unpm(config, User, backend)
   }
 
+  config = add_defaults(config)
   this.router = Router(config.basePathname)
   this.handler = handler(this)
   this.server = http.createServer(this.handler)
