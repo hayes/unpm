@@ -37,7 +37,7 @@ function reqAndRespSaved(t) {
   function handler(respond, route, unpm) {
     t.ok(respond.req)
     t.ok(respond.res)
-    t.equal(route, respond.route)
+    t.equal(route.route, '/test/path')
     t.equal(route.route, routeOptions.path)
 
     respond(null, 200, {arbitrary: 'data'})

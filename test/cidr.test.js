@@ -8,7 +8,7 @@ req.connection = {
 }
 
 test('adds middleware', function(t) {
-  var config = {}
+  var config = {checkAuth: false}
   var instance = unpm(config)
 
   t.plan(2)
@@ -22,7 +22,8 @@ test('adds middleware', function(t) {
 
 test('allows valid ips', function(t) {
   var instance = unpm({
-    cidr: ['127.0.0.0/8']
+    cidr: ['127.0.0.0/8'],
+    checkAuth: false
   })
   var check = instance.middleware[0]
 
@@ -35,7 +36,8 @@ test('allows valid ips', function(t) {
 test('blocks invalid ips', function(t) {
   var res = {writeHead: write, end: end}
   var instance = unpm({
-    cidr: ['10.0.0.0/8']
+    cidr: ['10.0.0.0/8'],
+    checkAuth: false
   })
   var check = instance.middleware[0]
 
@@ -63,7 +65,8 @@ test('blocks invalid ips', function(t) {
 
 test('allows if any range matches', function(t) {
   var instance = unpm({
-    cidr: ['10.0.0.0/8', '127.0.0.0/8']
+    cidr: ['10.0.0.0/8', '127.0.0.0/8'],
+    checkAuth: false
   })
   var check = instance.middleware[0]
 
