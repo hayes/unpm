@@ -1,5 +1,5 @@
 {
-  "name": "unpm",
+  "name": "@newrelic/unpm",
   "version": "1.2.0",
   "description": "private npm registry in node",
   "main": "./index.js",
@@ -23,7 +23,7 @@
     "semver": "^2.3.2",
     "unpm-auth": "^1.0.2",
     "unpm-fs-backend": "^0.1.0",
-    "unpm-router": "0.0.4"
+    "unpm-router": "^0.1.0"
   },
   "license": "MIT",
   "devDependencies": {
