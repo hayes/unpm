@@ -1,7 +1,7 @@
+var latest_version = require('../../lib/utils/latest-version')
 var backend = require('unpm-mem-backend')
 var unpm = require('../../index')
 var request = require('request')
-var semver = require('semver')
 var test = require('tape')
 var url = require('url')
 var fs = require('fs')
@@ -120,7 +120,7 @@ function verify(config, t) {
   }
 
   function bumpVersionAndPut(done) {
-    var latest = Object.keys(fixture.versions).sort(semver.lt)[0]
+    var latest = latest_version(Object.keys(fixture.versions))
 
     var new_version = latest.split('.')
 
