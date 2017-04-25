@@ -113,7 +113,8 @@ function setupWith(fn, middleware, done) {
   server = http.createServer(handler({
     log: log,
     router: router,
-    middleware: middleware
+    middleware: middleware,
+    config: {host: {}}
   }))
 
   server.listen(8910, done)

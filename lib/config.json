@@ -17,5 +17,6 @@
     "authenticatedGets": false
   },
   "fallback": null,
-  "alwaysIncludeFallback": false
+  "alwaysIncludeFallback": false,
+  "autoDetectHost": false
 }

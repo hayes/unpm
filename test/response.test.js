@@ -10,6 +10,8 @@ test('verify 500', verify_500)
 
 function verifyJSONResponse(t) {
   var res = {}
+  var req = {headers: {}, socket: {}}
+  var unpm = {config: {host: {}}}
 
   t.plan(3)
 
@@ -23,11 +25,13 @@ function verifyJSONResponse(t) {
     t.end()
   }
 
-  respond(null, res).json(200, {arbitrary: 'data'})
+  respond(req, res, unpm).json(200, {arbitrary: 'data'})
 }
 
 function verifyErrorResponse(t) {
   var res = {}
+  var req = {headers: {}, socket: {}}
+  var unpm = {config: {host: {}}}
 
   t.plan(3)
 
@@ -44,11 +48,13 @@ function verifyErrorResponse(t) {
     t.end()
   }
 
-  respond(null, res).unauthorized()
+  respond(req, res, unpm).unauthorized()
 }
 
 function verifyNotFound(t) {
   var res = {}
+  var req = {headers: {}, socket: {}}
+  var unpm = {config: {host: {}}}
 
   t.plan(3)
 
@@ -65,11 +71,13 @@ function verifyNotFound(t) {
     t.end()
   }
 
-  respond(null, res).notFound()
+  respond(req, res, unpm).notFound()
 }
 
 function verifyConflict(t) {
   var res = {}
+  var req = {headers: {}, socket: {}}
+  var unpm = {config: {host: {}}}
 
   t.plan(3)
 
@@ -86,11 +94,13 @@ function verifyConflict(t) {
     t.end()
   }
 
-  respond(null, res).conflict()
+  respond(req, res, unpm).conflict()
 }
 
 function verify_500(t) {
   var res = {}
+  var req = {headers: {}, socket: {}}
+  var unpm = {config: {host: {}}}
 
   t.plan(2)
 
@@ -103,5 +113,5 @@ function verify_500(t) {
     t.end()
   }
 
-  respond(null, res).onError(new Error)
+  respond(req, res, unpm).onError(new Error)
 }
